@@ -1,0 +1,24 @@
+ static void Main(string[] args)
+        {
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            
+            uPLibrary.Networking.M2Mqtt.MqttClient mymqttclient = new uPLibrary.Networking.M2Mqtt.MqttClient("Localhost");
+            Console.WriteLine("========welcom ASTROROAD99 ======");
+
+            //inscription au broker
+            mymqttclient.Subscribe(new string[] { "tag26886/" }, new byte[] { MqttMsgBase.QOS_LEVEL_AT_LEAST_ONCE });
+            mymqttclient.Subscribe(new string[] { "tags" }, new byte[] { MqttMsgBase.QOS_LEVEL_AT_LEAST_ONCE });
+
+            //creation du client
+            string clientId = Guid.NewGuid().ToString();
+            mymqttclient.Connect(clientId, "ali", "isib", true, keepAlivePeriod: 5);
+
+            //messsage qui affiche les deux tags
+            Console.WriteLine("Subscriber:tag1/");
+            Console.WriteLine("Subscriber:tag2/");
+
+           //création d'un événement 
+            mymqttclient.MqttMsgPublishReceived += Mymqttclient_MqttMsgPublishReceived;
+            Application.Run(new lourd());
+        }
