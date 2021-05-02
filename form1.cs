@@ -618,8 +618,6 @@
 
 
 
-
-
         protected override void OnKeyUp(KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Left) { 
