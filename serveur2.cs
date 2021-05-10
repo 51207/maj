@@ -1,950 +1,105 @@
-public partial class Form1 : Form
+ class Program
     {
-       
-        Socket listen;
-      
-        public void initializesocket()
-        {
-            try
-            {
-                IPAddress ip = IPAddress.Parse("192.168.1.5");
-                int port = 8001;
-                IPEndPoint local = new IPEndPoint(ip, port);
-                listen = new Socket(SocketType.Stream, ProtocolType.Tcp);
-                listen.Connect(local);
-                Console.WriteLine("client connexion");
-
-            }
-            catch (Exception e) { Console.WriteLine(e.Message); }
-        }
-
-     //   private int Score { get; set; }
-      
-        Coin door = new Coin();
-        public event EventHandler<EventScore> Win;
-        public Form1()
-        {
-            InitializeComponent();
-            initializesocket();
-            
-
-            //on initialise les scores de la liste de score
-            listScoreplayers.Add(0);
-            listScoreplayers.Add(0);
-
-           
-
-        }
-
-
-     
-
-
-
-        //***** game over *****
-        public void GameOver()
+        static void Main(string[] args)
         {
 
-            if (player1.Top + player1.Height > this.ClientSize.Height)
-            {
-
-                // important: la gravité est 8 
-                int Score = listScoreplayers[0];
-                int Score2 = listScoreplayers[1];
-                labelscore.Text = "Score : " + Score.ToString();
-               labelscoreother.Text = "Score : " + Score2.ToString();
-
-                timer.Stop();
-                
-                
-                if (MessageBox.Show("Vous avez perdu. " + Environment.NewLine + labelscore.Text + " Points " +"and" + labelscore.Text + "Score : " + Score2.ToString() +"points " ,"Game Over", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
-                {
-                    Application.Restart();
-                   // Restart();
-                }
-                
-                
-                else
-                {
-                    Environment.Exit(1);
-                }
-
-            }
-        }
-
-
-
-
-
-        //****** Restart ******
-        private void Restart()
-        {
-            player1.Jump = false;
-         
-            player1.left = false;
-            
-            player1.right = false;
-            
-           int Score = 0;
-            
-            labelscore.Text = "Score : " + Score.ToString();
-
-
-            // renitialisation des scores (players)
-
-            listScoreplayers[0] = 0;
-            listScoreplayers[1] = 0;
-
-
-
-
-            foreach (Control x in this.Controls)
-            {
-
-                if (x is PictureBox && x.Visible == false)
-                {
-                    x.Visible = true;
-               
-                }
-                
-                coin11.Location = new Point(97, 250);
-                
-                coin8.Location = new Point(25, 135);
-                
-                coin14.Location = new Point(221, 135);
-                
-                coin1.Location = new Point(353, 50);
-                
-                coin2.Location = new Point(519, 112);
-                
-                
-                coin13.Location = new Point(718, 112);
-                
-                coin7.Location = new Point(609, 250);
-                
-                coin15.Location = new Point(403, 323);
-                
-                player1.Location = new Point(200, 0);
-                
-                timer.Start();
-
-            }
-
-        }
-
-
-
-
-        public List<int> listScoreplayers = new List<int>();
-       
-
-
-
-        //**** collision player 1
-    
-        public string collisionCoinsPlayer1()
-        {
-            string s = "3"; string q = "3";
-
-            Random r = new Random();
-
-
-           List<Player> listplayers = new List<Player>();
-
-
-            listplayers.Add(player1);
-            
-                int Score = listScoreplayers.ElementAt(0);
-
-
-                foreach (Control item in player1.Parent.Controls)
-                {
-
-
-                    if (item is Coin)
-                    {
-
-
-
-                        if ((string)item.Tag == "Coin")
-                        {
-
-
-                            if (Score < 40)
-                            {
-                                coin3.Visible = false;
-                            }
-                            else
-                            {
-                                coin3.Visible = true;
-                                coin3.Location = new Point(233, 50);
-                            }
-
-
-                            if (player1.Bounds.IntersectsWith(item.Bounds))
-                            {
-                                int a = r.Next(10, (player2.Parent.ClientSize.Width - 50));
-                                int b = r.Next(43, (player2.Parent.ClientSize.Height - 50));
-                                item.Location = new Point(a, b);
-
-                                s = a.ToString();
-                                q = b.ToString();
-
-
-                                if (item.AccessibleName == "coin-1")
-                                {
-
-
-                                    if (Score < 30)
-                                    {
-                                        //  Score -= 1;
-
-
-                                        //element i de la liste : on retire 1 point au joueur i
-
-                                        listScoreplayers[0] -= 1;
-
-                                    }
-                                    else if (Score > 30)
-
-                                    {
-
-                                        //Score -= 4; 
-                                        listScoreplayers[0] -= 4;
-                                    }
-
-                                }
-
-
-
-                                if (item.AccessibleName == "coin+1")
-                                {
-                                    //Score += 1;
-                                    listScoreplayers[0] += 1;
-                                }
-
-
-
-                                if (item.AccessibleName == "coin+2")
-                                {
-                                    //    Score += 2;
-                                    listScoreplayers[0] += 2;
-                                }
-
-
-
-                                if (item.AccessibleName == "coin+3")
-                                {
-                                    //    Score += 3; 
-                                    listScoreplayers[0] += 3;
-
-                                }
-
-
-
-
-                                labelscore.Text = "score :" + Score.ToString(); ;
-
-                                if (player1.Bounds.IntersectsWith(item.Bounds) && (Score >= 30))
-                                {
-
-                                    EventScore eventScore = new EventScore();
-
-                                    eventScore.WinScore = "On va corser un peu plus le choses";
-
-                                    labelscore30.Text = eventScore.WinScore;
-
-
-                                }
-
-                            }
-
-                            item.BringToFront();
-
-
-
-                            if (player1.Bounds.IntersectsWith(coin3.Bounds) && Score >= 40)
-                            {
-
-
-                                if (coin3.AccessibleName == "door")
-                                {
-
-                                    timerlabel1.stoptimer();
-                                    timer.Stop();
-
-
-                                    if (MessageBox.Show("You win avec un score de :" + labelscore.Text + Environment.NewLine + "et un temps de :" + "" + timerlabel1.Text, "Game Finish", MessageBoxButtons.YesNo) == DialogResult.Yes)
-                                    {
-                                        Restart();
-                                        timerlabel1.starttimer();
-                                    }
-
-                                    else { Application.Exit(); }
-
-
-
-                                }
-
-                                item.BringToFront();
-                            }
-
-
-                        }
-
-                    }
-                }
-            
-            return s + ":" + q;
-        }
-
-
-
-  //****collisions des autres players execepté le prayer1
-
-     
-        public void collisionCoinsplayer2(int a , int b)
-        {
-          //  string s = "-1"; string q = "-1";
-
-           List<Player> listplayers = new List<Player>();
-
-
-
-           // listplayers.Add(player1);
-            listplayers.Add(player2);
-
-
-
-            //foreach (Player item1 in listplayers)
-            for (int i = 0; i < listplayers.Count; i++)
-            {
-
-                //**ajouts des autres joueurs dans la liste des joueurs
-
-                Player item1 = listplayers.ElementAt(i);
-               
-                
-                
-                //** on fait (i+1) parceque  listScoreplayers.ElementAt(i) correpond au socre du player1 **  
-                
-                int Score = listScoreplayers.ElementAt(i+1);
-
-
-                foreach (Control item in item1.Parent.Controls)
-                {
-
-
-                    if (item is Coin)
-                    {
-
-
-
-                        if ((string)item.Tag == "Coin")
-                        {
-
-
-                            if (Score < 40)
-                            {
-                                coin3.Visible = false;
-                            }
-                            else
-                            {
-                                coin3.Visible = true;
-                                coin3.Location = new Point(233, 50);
-                            }
-
-
-                            if (item1.Bounds.IntersectsWith(item.Bounds))
-                            {
-                               
-                                item.Location = new Point(a, b);
-
-                              
-
-                                if (item.AccessibleName == "coin-1")
-                                {
-
-
-                                    if (Score < 30)
-                                    {
-                                        //  Score -= 1;
-
-
-                                        //element (i+1)  de la liste : on retire 1 point au player(2 ou 3 ou 4) 
-
-                                        listScoreplayers[i+1] -= 1;
-
-                                    }
-                                    else if (Score > 30)
-
-                                    {
-
-                                        //Score -= 4; 
-                                        listScoreplayers[i+1] -= 4;
-                                    }
-
-                                }
-
-
-
-                                if (item.AccessibleName == "coin+1")
-                                {
-                                    //Score += 1;
-                                    listScoreplayers[i+1] += 1;
-                                }
-
-
-
-                                if (item.AccessibleName == "coin+2")
-                                {
-                                    //    Score += 2;
-                                    listScoreplayers[i+1] += 2;
-                                }
-
-
-
-                                if (item.AccessibleName == "coin+3")
-                                {
-                                    //    Score += 3; 
-                                    listScoreplayers[i+1] += 3;
-
-                                }
-
-
-
-
-                               labelscoreother.Text = "score :" + Score.ToString(); ;
-
-                                if (item1.Bounds.IntersectsWith(item.Bounds) && (Score >= 30))
-                                {
-
-                                    EventScore eventScore = new EventScore();
-
-                                    eventScore.WinScore = "On va corser un peu plus le choses";
-
-                                    labelscore30.Text = eventScore.WinScore;
-
-
-                                }
-
-                            }
-
-                            item.BringToFront();
-
-
-
-                            if (item1.Bounds.IntersectsWith(coin3.Bounds) && Score >= 40)
-                            {
-
-
-                                if (coin3.AccessibleName == "door")
-                                {
-
-                                    timerlabel1.stoptimer();
-                                    timer.Stop();
-
-
-                                    if (MessageBox.Show("You win avec un score de :" + labelscoreother.Text + Environment.NewLine + "et un temps de :" + "" + timerlabel1.Text, "Game Finish", MessageBoxButtons.YesNo) == DialogResult.Yes)
-                                    {
-                                        Restart();
-                                        timerlabel1.starttimer();
-                                    }
-
-                                    else { Application.Exit(); }
-
-
-
-                                }
-
-                                item.BringToFront();
-                            }
-
-
-                        }
-
-                    }
-                }
-            }
-            
-        }
-
-
-
-
-
-
-
-      
-        
-        
-
-        //*****intersection left - Right*****        
-        
-        public string intersect_Low_High1()
-        {
-            string a = "0";
-           
-            
-            foreach (Control item in player1.Parent.Controls)
-            {
-                
-                if (item is Player)
-                {
-
-                 
-                    if (item.Top < panelGame1.Top)
-                    {
-                       
-                        item.Top = panelGame1.Top;
-                        a = "1";
-                    }
-                        else
-                             {
-                                 a = "0"; ;
-                             }
-                
-                }
-
-
-            }
-            return a;
-        }
-
-
-
-        public string intersect_Right_Left1()
-        { 
-            string i = "0", k = "0";
-            foreach (Control item in player1.Parent.Controls)
-            {
-               
-                if (item is Player)
-                {
-                  
-                    
-                    if (item.Left < 0)
-                    {
-                        item.Left = 0; return i = "1";
-                    }
-                    
-                    
-                    
-                    if (item.Right > item.Parent.ClientSize.Width)
-                    {
-
-                        item.Left = item.Parent.ClientSize.Width - item.Width;
-                        
-                        
-                        return k = "1";
-                    }
-                }
-            }
-
-            return i + ":" + k;
-        
-        }
-    
-                
-
-        
-      
-       
-        // ***** mouvement des autres joueurs *****      
-        
-        private void moovotherplayer(bool goleft,bool goright, bool goup)
-        { //foreach(Control item in player1.Parent.Controls){}
-                       
-            if(goleft == true)
-            {
-                player2.left = true; 
-
-            }
-        
-            else
-                { 
-                    player2.left = false;
-                }
-           
-            
-
-
-            if (goright == true)
-            {
-                player2.right = true;
-            }
-             
-            else {
-            
-                player2.right = false;
-                  
-            }
-
-
-
-
-            if (goup == true)
-            {
-                player2.Jump = true;
-         
-           }
-        
-        }
-
-
-
-
-
-
-        // ***** methode permettant de commander les touche *****
-
-        protected override void OnKeyDown(KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Left) { player1.left = true; }
-            
-            
-            if (e.KeyCode == Keys.Right) { player1.right = true; }
-            
-            
-            if (e.KeyCode == Keys.Up && player1.Jump == false)
-            {
-                player1.Jump = true;
-            
-            }
-
-
-            base.OnKeyDown(e);
-        }
-
-
-
-
-
-        protected override void OnKeyUp(KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Left) { 
-            
-                player1.left = false; 
-            }
-            
-            
-            if (e.KeyCode == Keys.Right) {
-                
-                player1.right = false;
-            
-            }
-            
-            
-            if (player1.Jump == true) 
-            {
-                player1.Jump = false;
-            
-            }
-            base.OnKeyUp(e);
-        }
-
-
-
-
-
-      
-
-        //***** timer tick *****
-       
-        private void timer_Tick(object sender, EventArgs e)
-            {
-
-            bool goleft=false, goright=false, gojump=false;
-        
-
-
-            //**intersection **
-
-            intersect_Low_High1();
-            
-            intersect_Right_Left1();
-            
-            timerlabel1.starttimer();
-               
-            
-            
-            
-            
-            //***** mouvements des joueurs *****
-            
-            string movement = player1.movement();
-
-
-
-
-            //   player2.movement();
-
-
-
-
-            //***** collision plateforme *****
-            //string plate = collisionPlatform2listplayers();//player1.collisionPlatform1();
-            string plate = player1.collisionPlatform1();;
-
-
-
-            //*****  score player 1 ****** 
-
-           int  Score = listScoreplayers[0];
-            
-            labelscore.Text = Score.ToString();
-
-
-
-            //****** score player2 ******
-
-           int Score2 = listScoreplayers[1];
-            labelscoreother.Text = Score2.ToString();
-
-
-
-
-
-
-
-
-
-
-
-
-            // *****  coin ******
-
-            //string coin =  collisionCoins1();
-            string valcoins = collisionCoinsPlayer1(); //collisionCoins();
-
-
-
-      
-
-
-            //****** buffer à envoyer au serveur ******
-           
-            
-            
-            byte[] buffer = Encoding.ASCII.GetBytes(movement + "/" + plate + "/" + valcoins + "/" + labelscore.Text);
-            //listen.RemoteEndPoint.ToString()
-
+            Socket listener;
           
+            IPAddress ip = IPAddress.Parse("192.168.1.5");
 
-
-
-            // **** on envoie le buffer ****
+           //connecting player1
+            int port = 8001;
+            IPEndPoint localip = new IPEndPoint(ip, port);
+            listener = new Socket(SocketType.Stream, ProtocolType.Tcp);
+            listener.Bind(localip);
+            listener.Listen(100);
+            Console.WriteLine("waiting connexion client 1 ......");
+            int n = 1;
+            Socket client1 = listener.Accept();
+            Socket client2 = listener.Accept();
+            Console.WriteLine("accept client1");
            
-            listen.Send(buffer);
-            
-            GameOver();
+            byte[] buffer1 = Encoding.ASCII.GetBytes("ID:0");
+            byte[] buffer2 = Encoding.ASCII.GetBytes("ID:1");
+
+            client1.Send(buffer2);
+            client2.Send(buffer1);
 
 
 
-
-
-             // **** buffer reçu  *****
-
-
-
-
+            while (true)
+            {
+         
+                
+                
+                // reception     
+          
                 byte[] buf2 = new byte[1024];
+                int bytecode = client1.Receive(buf2);
+                string msg1 = Encoding.ASCII.GetString(buf2, 0, bytecode);
+ 
+                buf2 = new byte[1024];
+               bytecode = client2.Receive(buf2);
+                string msg2 = Encoding.ASCII.GetString(buf2, 0, bytecode);
+
+
+                string [] data =  msg1.Split('/');
+                   
+                //Split: Returns a string array that contains the substrings in this instance that are delimited by elements of a specified string or Unicode character array.
             
-                int bytecode = listen.Receive(buf2);
+                    string movement = data[0];
+   
+                    string plateform = data[1];
+            
+                    string coina = data[2];
+ 
+                    string scoring = data[3];
+               
+                    string[] moov = movement.Split(':');
+              
+                    string[] piece = coina.Split(':');
+
+         
+                    if (plateform == "1") { Console.WriteLine("plateforme ok"); }
+                
+             
+                      
+                   if(piece[0] != "-1") { Console.WriteLine("le joueur a pris un coin: a" ); }
+         
                     
+                    if (piece[1] != "-1") { Console.WriteLine(" le joueur a pris un coin : b"); }
+         
+                    
+                    
+            
+             
 
-                string msg = Encoding.ASCII.GetString(buf2, 0, bytecode);
-                     
-            
-
-            
-            //*** premier split ***
-
-                string[] data = msg.Split('/');
-                
-                
-              
-                string movement1 = data[0];
-              
-               
-            
-                string platef = data[1];
-              
-            
-            
-          
-                string coin1 = data[2];
-          
-                
-            
-            
-                string score1 = data[3];
-
-                
-            //*** deuxième split ***
-                
-                string[] moov = movement1.Split(':');
-           
-               
-                //** left **
 
                 if (moov[0] == "1")
                 {
+                    Console.WriteLine(" left player");
+
+                }
+                    else if (moov[1] == "1"){ Console.WriteLine(" Right player"); }
+              
                 
-                    goleft = true;
-
-                }
+                // Console.WriteLine(moov[2]);
+                if(moov[2] == "0") { Console.WriteLine(" No jump "); }
                 
-
-
-                //** right **
-
-                if (moov[1] == "1")
-                {
-                 
-                    goright = true;
-               
-               }
-               
-
-                //**Jump**
-
-                if (moov[2] == "0")
-                {
-                 
-                    gojump = false;
-                }
-
-
-                if (moov[2] == "1")
-                {
-                  
-                    gojump = true;
-                }
-
-
-                if (moov[2] == "2")
-                {
-                  
-                    gojump = false;
-                }
-
-
-            player2.movement();
-            moovotherplayer(goleft, goright, gojump);
-
-
-
-
-            //recuperation valeur coin
-            string[] coinsplit = coin1.Split(':');
-            int a = Int32.Parse(coinsplit[0]);
-            int b = Int32.Parse(coinsplit[1]);
-
-            collisionCoinsplayer2(a, b);
-
-
-
-
-            //*****plateform****
-
-            // if (platef == "1") { player2.collisionPlatform1(); }
-
-            //  if (platef == "1") { collisionPlatform2listplayers(); }
-
-            player2.collisionPlatform1();
-
-
-
-
-        }
-
-
-
-        public void generatecoin(int a , int b)
-        {
-            //si un coin doit être generer ?
-            
-            if( (a != -1)   &&   (b != -1))
-            {
-
-                coin8.Location = new Point(a, b);
                 
+                if (moov[2] == "1") { Console.WriteLine(" jump and falling "); }
+                
+                
+                if (moov[2] == "2") { Console.WriteLine(" he can jump  "); }
+             
+              buffer1 = Encoding.ASCII.GetBytes(msg1);
+              buffer2 = Encoding.ASCII.GetBytes(msg2);
+
+                client1.Send(buffer2);
+                client2.Send(buffer1);
             }
+            n++;
 
-
-          
-
-        }
-
-
-
-
-
-
-
-// ****** changement de couleurs de joueurs ****** 
-
-
-        private void cdToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
-
-        }
-
-        private void butToolStripMenuItem_Click(object sender, EventArgs e)
-        { 
-            Form2 form2 = new Form2();
-           
-            form2.Show();
-            
-       
-        }
-
-
-        private void coboyToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            player1.Image = Properties.Resources.emoji3;
-        }
-
-        
-        private void evilToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            player1.Image = Properties.Resources.emoji2;
-        }
-
-        
-        private void angryToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            player1.Image = Properties.Resources.emoji13;
-        
-            player1.BackColor = Color.FromArgb(128, 128, 255); ;
-        
-        }
-
-        private void greenEmoToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            player1.Image = Properties.Resources.emoji5;
-        }
-
-        private void blueEmoToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            player1.Image = Properties.Resources.emoji1;
-        
-            player1.BackColor = Color.FromArgb(128, 128, 255); ;
-        
-        }
-
-        private void orangeEmoToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            player1.Image = Properties.Resources.emoji10;
-        }
-
-        private void classEmoToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            player1.Image = Properties.Resources.emoji71;
-        
-            player1.BackColor = Color.FromArgb(128, 128, 255); ;
         }
     }
 }
