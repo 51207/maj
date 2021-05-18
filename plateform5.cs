@@ -12,47 +12,57 @@ using System.Net;
 namespace PlateformWithoutMoov
 {
     public partial class Form1 : Form
-    {
+    {   
         // player id
         int playersID ;
-        int Nbresdejoueurs = 3;
+        int Nbresdejoueurs = 2;
         public List<Player> listdesplayers0 = new List<Player>();
         public void lalistedesplayers()
         {
             listdesplayers0.Add(player1);
             listdesplayers0.Add(player2);
-            listdesplayers0.Add(player3);
-            
-        }
-
-
-        public void checkbresdeplayers( int i)
-        {
-         /*  if(i == 1)
+          
+            if (Nbresdejoueurs == 3)
             {
-                i = 2;
-               
+                listdesplayers0.Add(player3);
+                player3.Visible = true;
+                label_III.Visible = true;
+
             }
-            
-            else if(i >= 2 && i< listdesplayers0.Count)
-            {
-                for (int a = i + 1; a < listdesplayers0.Count; a++)
-                {
-                    listdesplayers0.ElementAt(i).Visible = false;
-
-                }
-
-            }*/
            
 
 
+           if (Nbresdejoueurs == 4)
+            {
+                listdesplayers0.Add(player4);
+                player4.Visible = true;
+                label_IV.Visible = true;
 
-            
+                listdesplayers0.Add(player3);
+                player3.Visible = true;
+                label_III.Visible = true;
+            }
+          
         }
 
+        List<bool> visibleplayers34 = new List<bool>();
+       
+public void boolplayer()
+        {
+            player3.Visible = false;
+            player4.Visible = false;
+            label_IV.Visible = false;
+            label_III.Visible = false;
 
+        }
+      
+        //***** socket ******
         Socket listen;
       
+
+
+      //***** connexion socket ******
+        
         public void initializesocket()
         {
             try
@@ -66,7 +76,12 @@ namespace PlateformWithoutMoov
                 Console.WriteLine("client connexion");
 
 
-                byte[] bufid = new byte[1024];
+             byte[]   bufid = Encoding.ASCII.GetBytes(Nbresdejoueurs.ToString());
+              listen.Send(bufid);
+
+               // byte[] bufid = new byte[1024];
+               bufid = new byte[1024];
+
 
                 int bytecodeid = listen.Receive(bufid);
 
@@ -78,15 +93,15 @@ namespace PlateformWithoutMoov
                 //ID[1]= correspond à la valeur de l'id qui peut être soit 1 soit 0   ID[0]= nom de l'id qui est ID 
                 //puis on convertit en int la valeur de l'ID
                 playersID = int.Parse(ID[1]);
-            //   int Nbresde = int.Parse(ID[2]);
+                //   int Nbresde = int.Parse(ID[2]);
 
-             //   checkbresdeplayers(Nbresde);
-
-
+               // bufid = Encoding.ASCII.GetBytes(Nbresdejoueurs.ToString());
+              //  listen.Send(bufid);
 
             }
            
             catch (Exception e) { Console.WriteLine(e.Message); }
+       
         }
 
      //   private int Score { get; set; }
@@ -103,11 +118,12 @@ namespace PlateformWithoutMoov
         
         
         public Form1()
-        {   
-
+        {
+           
 
             InitializeComponent();
-            
+
+            boolplayer();
             
             //on initialise la liste des players 
             lalistedesplayers();
@@ -121,48 +137,186 @@ namespace PlateformWithoutMoov
             {
                 listScoreplayers.Add(0);
             }
-          //  listScoreplayers.Add(0);
-           // listScoreplayers.Add(0);
-
-           
+            //  listScoreplayers.Add(0);
+            // listScoreplayers.Add(0);
+          
 
         }
 
 
-     
+
+
 
 
 
         //***** game over *****
         public void GameOver()
         {
-
-            if (listdesplayers0[playersID].Top + listdesplayers0[playersID].Height > this.ClientSize.Height)
+            int i = 0;
+            if (Nbresdejoueurs == 2)
             {
-
-                // important: la gravité est 8 
-                int Score = listScoreplayers[0];
-                int Score2 = listScoreplayers[1];
-                labelscore.Text = "Score : " + Score.ToString();
-               labelscoreother.Text = "Score : " + Score2.ToString();
-
-                timer.Stop();
-                
-                
-                if (MessageBox.Show("Vous avez perdu. " + Environment.NewLine + labelscore.Text + " Points " +"and" + labelscore.Text + "Score : " + Score2.ToString() +"points " ,"Game Over", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+                if (listdesplayers0[i].Top + listdesplayers0[i].Height > this.ClientSize.Height && listdesplayers0[i + 1].Top + listdesplayers0[i + 1].Height > this.ClientSize.Height)
                 {
-                    Application.Restart();
-                   // Restart();
-                }
-                
-                
-                else
-                {
-                    Environment.Exit(1);
-                }
 
+                    //if (listdesplayers0[playersID].Top + listdesplayers0[playersID].Height > this.ClientSize.Height && )
+
+
+                    // important: la gravité est 8 
+                    int Score = listScoreplayers[0];
+                    int Score2 = listScoreplayers[1];
+                    int Score3 = 0;
+                    int Score4 = 0;
+                    if (player3.Visible == true)
+                    {
+                        Score3 = listScoreplayers[2];
+                        label_III.Text = "III : " + Score3.ToString() + " " + "Points";
+
+                    }
+                    else { label_III.Text = " "; }
+
+                    if (player4.Visible == true)
+                    {
+                        Score4 = listScoreplayers[3];
+                        label_IV.Text = "IV :" + Score4.ToString() + " " + "Points";
+
+                    }
+                    else { label_IV.Text = " "; }
+
+                    label_I.Text = "I : " + Score.ToString() + " " + "Points";
+                    label_II.Text = "II : " + Score2.ToString() + " " + "Points";
+                    //  label_III.Text = "III : " + Score3.ToString();
+                    //    label_IV.Text = "IV :" + Score4.ToString();
+
+                    timer.Stop();
+
+
+                    if (MessageBox.Show("Score final : " + Environment.NewLine + label_I.Text + Environment.NewLine + label_II.Text + Environment.NewLine + label_III.Text + Environment.NewLine + label_IV.Text, "Game Over", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+                    {
+                        Application.Restart();
+                        // Restart();
+                    }
+
+
+                    else
+                    {
+                        Environment.Exit(1);
+                    }
+
+                }
             }
+
+
+            if (Nbresdejoueurs == 3)
+            {
+                if (listdesplayers0[i].Top + listdesplayers0[i].Height > this.ClientSize.Height && listdesplayers0[i + 1].Top + listdesplayers0[i + 1].Height > this.ClientSize.Height && listdesplayers0[i + 2].Top + listdesplayers0[i + 2].Height > this.ClientSize.Height)
+                {
+
+                    //if (listdesplayers0[playersID].Top + listdesplayers0[playersID].Height > this.ClientSize.Height && )
+
+
+                    // important: la gravité est 8 
+                    int Score = listScoreplayers[0];
+                    int Score2 = listScoreplayers[1];
+                    int Score3 = 0;
+                    int Score4 = 0;
+                    if (player3.Visible == true)
+                    {
+                        Score3 = listScoreplayers[2];
+                        label_III.Text = "III : " + Score3.ToString() + " " + "Points";
+
+                    }
+                    else { label_III.Text = " "; }
+
+                    if (player4.Visible == true)
+                    {
+                        Score4 = listScoreplayers[3];
+                        label_IV.Text = "IV :" + Score4.ToString() + " " + "Points";
+
+                    }
+                    else { label_IV.Text = " "; }
+
+                    label_I.Text = "I : " + Score.ToString() + " " + "Points";
+                    label_II.Text = "II : " + Score2.ToString() + " " + "Points";
+                    //  label_III.Text = "III : " + Score3.ToString();
+                    //    label_IV.Text = "IV :" + Score4.ToString();
+
+                    timer.Stop();
+
+
+                    if (MessageBox.Show("Score final : " + Environment.NewLine + label_I.Text + Environment.NewLine + label_II.Text + Environment.NewLine + label_III.Text + Environment.NewLine + label_IV.Text, "Game Over", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+                    {
+                        Application.Restart();
+                        // Restart();
+                    }
+
+
+                    else
+                    {
+                        Application.Exit();
+                        Environment.Exit(1);
+                    }
+
+                }
+            }
+
+
+
+            if (Nbresdejoueurs == 4)
+            {
+                if (listdesplayers0[i].Top + listdesplayers0[i].Height > this.ClientSize.Height && listdesplayers0[i + 1].Top + listdesplayers0[i + 1].Height > this.ClientSize.Height && listdesplayers0[i + 2].Top + listdesplayers0[i + 2].Height > this.ClientSize.Height && listdesplayers0[i + 3].Top + listdesplayers0[i + 3].Height > this.ClientSize.Height)
+                {
+
+                    //if (listdesplayers0[playersID].Top + listdesplayers0[playersID].Height > this.ClientSize.Height && )
+
+
+                    // important: la gravité est 8 
+                    int Score = listScoreplayers[0];
+                    int Score2 = listScoreplayers[1];
+                    int Score3 = 0;
+                    int Score4 = 0;
+                    if (player3.Visible == true)
+                    {
+                        Score3 = listScoreplayers[2];
+                        label_III.Text = "III : " + Score3.ToString() + " " + "Points";
+
+                    }
+                    else { label_III.Text = " "; }
+
+                    if (player4.Visible == true)
+                    {
+                        Score4 = listScoreplayers[3];
+                        label_IV.Text = "IV :" + Score4.ToString() + " " + "Points";
+
+                    }
+                    else { label_IV.Text = " "; }
+
+                    label_I.Text = "I : " + Score.ToString() + " " + "Points";
+                    label_II.Text = "II : " + Score2.ToString() + " " + "Points";
+                    //  label_III.Text = "III : " + Score3.ToString();
+                    //    label_IV.Text = "IV :" + Score4.ToString();
+
+                    timer.Stop();
+
+
+                    if (MessageBox.Show("Score final : " + Environment.NewLine + label_I.Text + Environment.NewLine + label_II.Text + Environment.NewLine + label_III.Text + Environment.NewLine + label_IV.Text, "Game Over", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+                    {
+                        Application.Restart();
+                        // Restart();
+                    }
+
+
+                    else
+                    {
+                        Environment.Exit(1);
+                    }
+
+                }
+            }
+
+
         }
+        
+
 
 
 
@@ -179,13 +333,16 @@ namespace PlateformWithoutMoov
             
            int Score = 0;
             
-            labelscore.Text = "Score : " + Score.ToString();
+            label_I.Text = "Score : " + Score.ToString();
 
 
-            // renitialisation des scores (players)
+            // renitialisation des scores de tous les players dans listdesplayers
 
-            listScoreplayers[0] = 0;
-            listScoreplayers[1] = 0;
+            for (int i = 0; i < listdesplayers0.Count; i++)
+            {
+                listScoreplayers[i]=0;
+            }
+        
 
 
 
@@ -227,22 +384,20 @@ namespace PlateformWithoutMoov
 
 
 
-        public List<int> listScoreplayers = new List<int>();
-       
+
+
+
+        //***** Listes des scores ******
+
+        public List<int> listScoreplayers = new List<int>();       
 
 
 
 
 
-        //***** collisions coins ******
    
-
-
-      
-
-
-
-
+   
+        //****** Random permettant la génération  des coins ******
 
         public Random r = new Random(0);
 
@@ -250,7 +405,10 @@ namespace PlateformWithoutMoov
 
 
 
-        //**** collision player 1
+
+
+
+        //***** collisions coins player lisdesplayer[playerID] ******
 
         public string collisionCoinsPlayer1()
         {
@@ -263,12 +421,17 @@ namespace PlateformWithoutMoov
 
 
            // listplayers.Add(player1);
+
+
+
+
+            //elementAt  retourne la valeur d-qui se trouve l'inddex correpondant
             
                 int Score = listScoreplayers.ElementAt(playersID);
 
 
                 foreach (Control item in listdesplayers0[playersID].Parent.Controls)
-                {
+                { //Control item in player1.Parent.controls
 
 
                     if (item is Coin)
@@ -337,6 +500,9 @@ namespace PlateformWithoutMoov
 
 
 
+
+
+
                                 if (item.AccessibleName == "coin+1")
                                 {
                                 //Score += 1;
@@ -346,6 +512,10 @@ namespace PlateformWithoutMoov
 
 
                             }
+
+
+
+
 
 
 
@@ -371,7 +541,7 @@ namespace PlateformWithoutMoov
 
 
 
-                                labelscore.Text = "score :" + Score.ToString(); ;
+                                label_I.Text = "I:" + Score.ToString(); ;
 
                                 if (listdesplayers0[playersID % Nbresdejoueurs].Bounds.IntersectsWith(item.Bounds) && (Score >= 30))
                               
@@ -401,14 +571,44 @@ namespace PlateformWithoutMoov
                                     timer.Stop();
 
 
-                                    if (MessageBox.Show("You win avec un score de :" + labelscore.Text + Environment.NewLine + "et un temps de :" + "" + timerlabel1.Text, "Game Finish", MessageBoxButtons.YesNo) == DialogResult.Yes)
-                                    {
-                                        Restart();
-                                        timerlabel1.starttimer();
-                                    }
+                                int Scores = listScoreplayers[0];
+                                int Score2 = listScoreplayers[1];
+                                int Score3 = 0;
+                                int Score4 = 0;
+                                if (player3.Visible == true)
+                                {
+                                    Score3 = listScoreplayers[2];
+                                    label_III.Text = "III : " + Score3.ToString() + " " + "Points";
 
-                                    else { Application.Exit(); }
+                                }
+                                else { label_III.Text = " "; }
 
+                                if (player4.Visible == true)
+                                {
+                                    Score4 = listScoreplayers[3];
+                                    label_IV.Text = "IV :" + Score4.ToString() + " " + "Points";
+
+                                }
+                                else { label_IV.Text = " "; }
+
+                                label_I.Text = "I : " + Scores.ToString() + " " + "Points";
+                                label_II.Text = "II : " + Score2.ToString() + " " + "Points";
+
+
+                                if (MessageBox.Show("Score final : " + Environment.NewLine + label_I.Text + Environment.NewLine + label_II.Text + Environment.NewLine + label_III.Text + Environment.NewLine + label_IV.Text, "FINISH", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+                                {
+                                    Application.Restart();
+                                    Restart();
+                                    timerlabel1.starttimer();
+
+                                }
+
+
+                                else
+                                {
+                                    Application.Exit();
+                                    Environment.Exit(1);
+                                }
                                 item.BringToFront();
 
                             }
@@ -421,15 +621,22 @@ namespace PlateformWithoutMoov
                 }
                 }
             
-            //return s + ":" + q;
+            
             return s + ":" + q;
         }
 
 
 
-        //****collisions des autres players execepté le prayer1
 
-     
+
+
+
+
+
+
+
+
+        //****collisions des autres players execepté le prayer1    
 
         public void collisionCoinsplayer2(int a, int b)
         {
@@ -448,15 +655,25 @@ namespace PlateformWithoutMoov
 
 
 
+
+
+
+
                 //**ajouts des autres joueurs dans la liste des joueurs
 
                 Player item1 = listdesplayers0.ElementAt(i);
 
                
 
-                //** on fait (i+1) parceque  listScoreplayers.ElementAt(i) correpond au socre du player1 **  
+
+
+
+                //** pour chaque score apartenant à un joueur particulier  **  
 
                 int Score = listScoreplayers.ElementAt(i );
+
+
+
 
 
                 foreach (Control item in item1.Parent.Controls)
@@ -548,7 +765,7 @@ namespace PlateformWithoutMoov
 
 
 
-                                labelscoreother.Text = "score :" + Score.ToString(); ;
+                                label_II.Text = "score :" + Score.ToString(); ;
 
                                 if (item1.Bounds.IntersectsWith(item.Bounds) && (Score >= 30))
                                 {
@@ -578,14 +795,46 @@ namespace PlateformWithoutMoov
                                     timerlabel1.stoptimer();
                                     timer.Stop();
 
-
-                                    if (MessageBox.Show("You win avec un score de :" + labelscoreother.Text + Environment.NewLine + "et un temps de :" + "" + timerlabel1.Text, "Game Finish", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                                    int Scores = listScoreplayers[0];
+                                    int Score2 = listScoreplayers[1];
+                                    int Score3 = 0;
+                                    int Score4 = 0;
+                                    if (player3.Visible == true)
                                     {
+                                        Score3 = listScoreplayers[2];
+                                        label_III.Text = "III : " + Score3.ToString() + " " + "Points";
+
+                                    }
+                                    else { label_III.Text = " "; }
+
+                                    if (player4.Visible == true)
+                                    {
+                                        Score4 = listScoreplayers[3];
+                                        label_IV.Text = "IV :" + Score4.ToString() + " " + "Points";
+
+                                    }
+                                    else { label_IV.Text = " "; }
+
+                                    label_I.Text = "I : " + Scores.ToString() + " " + "Points";
+                                    label_II.Text = "II : " + Score2.ToString() + " " + "Points";
+
+
+                                    if (MessageBox.Show("Score final : " + Environment.NewLine + label_I.Text + Environment.NewLine + label_II.Text + Environment.NewLine + label_III.Text + Environment.NewLine + label_IV.Text, "FINISH", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+                                    {
+                                        Application.Restart();
                                         Restart();
                                         timerlabel1.starttimer();
+
                                     }
 
-                                    else { Application.Exit(); }
+
+                                    else
+                                    {
+                                        Application.Exit();
+                                        Environment.Exit(1);
+                                    }
+
+
 
                                     item.BringToFront();
 
@@ -610,46 +859,7 @@ namespace PlateformWithoutMoov
 
 
 
-        public string collisionPlatform2listplayers()
-        {//attention si on veut utiliser cette methode dans form1 le "this.parent.control " devient Player1.parent.controls"
-            string m = "0";
-            string a = "1";
-            List<Player> listplayers = new List<Player>();
-            listplayers.Add(listdesplayers0[playersID]);
-            listplayers.Add(listdesplayers0[(playersID + 1) % Nbresdejoueurs]);
-
-            foreach (Player item1 in listplayers)
-            {
-
-
-                foreach (Control item in item1.Parent.Controls)
-                {
-
-                    if (item is Control)
-                    {
-
-                        if ((string)item.Tag == "PlateForm")
-                        {
-
-                            if (item1.Bounds.IntersectsWith(item.Bounds))
-                            {
-                                item1.G = 8;
-
-                                item1.Top = item.Top - item1.Height;
-                                // Jump = false;
-                                m = a;
-
-                                return m;
-                            }
-
-                            item.BringToFront();
-                        }
-                    }
-                }
-            }
-
-            return m;
-        }
+      
 
         
         
@@ -740,10 +950,7 @@ namespace PlateformWithoutMoov
                     //playerID correspond au premier player qui se connecte.
                   
             
-            
-            
-            
-            
+       
             
             
             
@@ -907,14 +1114,14 @@ namespace PlateformWithoutMoov
 
            int  Score = listScoreplayers[0];
             
-            labelscore.Text = Score.ToString();
+            label_I.Text = Score.ToString();
 
 
 
             //****** score player2 ******
 
            int Score2 = listScoreplayers[1];
-            labelscoreother.Text = Score2.ToString();
+            label_II.Text = Score2.ToString();
 
 
 
@@ -992,9 +1199,9 @@ namespace PlateformWithoutMoov
                     string movement1 = data[0];
 
 
-
-                    string platef = data[1];
-
+                   
+                        string platef = data[1];
+                
 
 
 
@@ -1077,21 +1284,13 @@ namespace PlateformWithoutMoov
                     int b = Int32.Parse(coinsplit[1]);
 
 
-                    //string tmp = coinsplit[100];
+                   
+
                     collisionCoinsplayer2(a, b);
-                    //string tmp = coinsplit[100];
+                  
 
 
-                    //  collisionCoinsplayer2(a, b);
-
-                    //*****plateform****
-
-                    // if (platef == "1") { player2.collisionPlatform1(); }
-
-                    //  if (platef == "1") { collisionPlatform2listplayers(); }
-
-                    //  listdesplayers0[(playersID + 1) % Nbresdejoueurs].collisionPlatform1();
-
+              
                 }
             }
 
@@ -1103,7 +1302,7 @@ namespace PlateformWithoutMoov
                     {
                         //Player item = listdesplayers0.ElementAt(i);
                         if (i != playersID)
-                        {
+                        { // ça ne conerne pas  donc lisdesplayers[playerID] , ça concerne les autres
 
                             listdesplayers0[(i)].collisionPlatform1();
                             // item.collisionPlatform1();
@@ -1171,6 +1370,11 @@ namespace PlateformWithoutMoov
         private void coboyToolStripMenuItem_Click(object sender, EventArgs e)
         {
             listdesplayers0[playersID+1].Image = Properties.Resources.emoji3;
+        }
+
+        private void label_I_Click(object sender, EventArgs e)
+        {
+
         }
 
 
