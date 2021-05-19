@@ -1,32 +1,64 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using System.Net.Sockets;
 using System.Net;
-namespace serveursss
+namespace ConsoleServeurPG
 {
-    class Program
+    public partial class Form1 : Form
     {
-        static void Main(string[] args)
-        {
-           int Nombredeplayers = 2;
-            string msgnbreplayer;
-            int playerNumbers=0;
+
+      
+            public Form1()
+            {
+                InitializeComponent();
+            }
+    
+            static void main() {
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new Form1());
+          
+
+        }
             
+                private void Form1_Load(object sender, EventArgs e)
+            {
+               
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            //****initialisation du nombre de players grâce à l'encodage du nombre dans le Textbox******
+
+            int nplayer = Int32.Parse(textplayers.Text);
+            Console.WriteLine(nplayer);
+            int Nombredeplayers = nplayer;
+            
+        
+
+
+
+            //*****  connecting players**********
+
             Socket listener;
-           
+
             IPAddress ip = IPAddress.Parse("192.168.1.5");
 
-           //connecting players
+    
             int port = 8001;
             IPEndPoint localip = new IPEndPoint(ip, port);
             listener = new Socket(SocketType.Stream, ProtocolType.Tcp);
             listener.Bind(localip);
             listener.Listen(100);
             Console.WriteLine("waiting connexion clients  ......");
-            //   int n = 1;
+            
             //    Socket client1 = listener.Accept();
             //  Console.WriteLine("accept client1");
             //Socket client2 = listener.Accept();
@@ -37,154 +69,90 @@ namespace serveursss
 
 
 
-            //tableau de clients
-            //Socket[] clients = new Socket[3];
-
-            /*       Socket[] clients = new Socket[Nombredeplayers];
-                 // Socket[] clients  ;
-                     for (int i = 0; i < clients.Length; i++)
-                     {
-                         clients[i] = listener.Accept();
-                         Console.WriteLine("accept client" + i);
-
-
-                     }*/
-
-
-
-
-            Socket[] clit = new Socket[1];
-               Socket[] clients;
-
-            for (int i = 0; i < 1; i++)
-            {
-                clit[i] = listener.Accept();
-                Console.WriteLine("accept client" + i);
-            }
-
-               
-
-                       int noctets = clit[0].Receive(bufferNbredeplayers);
-                       msgnbreplayer = Encoding.ASCII.GetString(bufferNbredeplayers, 0, noctets);
-                       //playerNumbers = Int32.Parse(msgnbreplayer);
-                       Console.WriteLine("le nombre de joueur est   " + msgnbreplayer);
-                       string mess = "réçu";
-                       byte[] bufNP = Encoding.ASCII.GetBytes(mess);
-                       clit[0].Send(bufNP);
-
-                        playerNumbers = Int32.Parse(msgnbreplayer);
-                   
-
-
-
-                   
-
-
-             int   NIP = playerNumbers;
-
-              clients = new Socket[NIP];
-            clients[0] = clit.ElementAt(0);
-            //elementAT[] : retourne l'element situé à la situtation donnée
-            byte[] de;
-
-               for (int j = 0; j < clients.Length; j++)
-               {
-                   if (j == 0) {
-                    
-                       continue; }
-
-                   else
-                   {
-                       clients[j] = listener.Accept();
-
-                       Console.WriteLine("accept client" + j);
-
-                   }
-
-
-               }
-
+            //***** tableau de clients*******
            
 
+            Socket[] clients = new Socket[Nombredeplayers];
+            // Socket[] clients  ;
+            for (int i = 0; i < clients.Length; i++)
+            {
+                clients[i] = listener.Accept();
+                Console.WriteLine("accept client" + i);
+
+
+            }
+
+
+
+            //***** Envoie l'id à chaque joueur ce qui permettra de savoir quelle joueur on s'occupe*******
 
 
             for (int i = 0; i < clients.Length; i++)
             {
 
                 Socket client = clients[i];
-                    byte[] buffer = Encoding.ASCII.GetBytes( "ID:"+i.ToString());
-                    //    byte[] buffer2 = Encoding.ASCII.GetBytes("ID2:1");
+                byte[] buffer = Encoding.ASCII.GetBytes("ID:" + i.ToString()+":"+ nplayer.ToString() );
+                //    byte[] buffer2 = Encoding.ASCII.GetBytes("ID2:1");
 
-                    client.Send(buffer);
+                client.Send(buffer);
+               
+                
+                
+                //  Socket  client1 = clients[0];
+                // Socket client2 = clients[1];
+                //    byte[] buffer1 = Encoding.ASCII.GetBytes("ID1:0");
+                //    byte[] buffer2 = Encoding.ASCII.GetBytes("ID2:1");
+                //  client1.Send(buffer1);
+                // client1.Send(buffer1);
 
-                    //  client.Send(buffer2);
-                }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            //  Socket  client1 = clients[0];
-
-            // Socket client2 = clients[1];
-
-            List<string> ReceptmsgLists = new List<string>();
-            //ReceptmsgLists.Add("empty");
-            //ReceptmsgLists.Add("empty");
-           
-            List<byte[]> SendmsgLists = new List<byte[]>();
-            byte[] jaar = new byte[1024];
-
-            //*** initialisations des listes  en fonctions du nombre de joueurs
-         
-            
-            // for ( int i = 0; i< Nombredeplayers; i++)
-               for (int i = 0; i < clients.Length; i++)
-                {
-                ReceptmsgLists.Add("empty");
-                SendmsgLists.Add(jaar);
             }
 
 
 
 
-           // List<byte[]> SendmsgLists = new List<byte[]>();
-         //   byte[] jaar = new byte[1024];
-          //  SendmsgLists.Add(jaar);
-           // SendmsgLists.Add(jaar);
+
+
+
+            List<string> ReceptmsgLists = new List<string>();
+            /*
+             * ReceptmsgLists.Add("empty");
+             * ReceptmsgLists.Add("empty");
+             *  
+             */
+           
+            
+            
+            List<byte[]> SendmsgLists = new List<byte[]>();
+            byte[] jaar = new byte[1024];
+
+            //*** initialisations des listes  en fonctions du nombre de joueurs
+
+
+            // for ( int i = 0; i< Nombredeplayers; i++)
+            for (int i = 0; i < clients.Length; i++)
+            {
+                ReceptmsgLists.Add("empty");
+                SendmsgLists.Add(jaar);
+
+                // List<byte[]> SendmsgLists = new List<byte[]>();
+                //   byte[] jaar = new byte[1024];
+                //  SendmsgLists.Add(jaar);
+                // SendmsgLists.Add(jaar);
+            }
+
 
 
             while (true)
             {
 
+                //***** reception ******     
 
-               
-            
-                
-                
-                
-                
-                
-                // reception     
-
-
-                //liste de string pour chaque msg
-               // byte[] buffersrecept = new byte[1024];
 
                 //cette boucle permet de généraliser la réceptions des données  par rapports au nombre de clients 
 
                 for (int i = 0; i < ReceptmsgLists.Count; i++)
                 {
-                  byte[]  buffersrecept = new byte[10024];
+                    byte[] buffersrecept = new byte[10024];
                     int bytecodes = clients[i].Receive(buffersrecept);
                     string msg = Encoding.ASCII.GetString(buffersrecept, 0, bytecodes);
                     ReceptmsgLists[i] = msg;
@@ -229,12 +197,12 @@ namespace serveursss
 
 
 
-                 for (int i = 0; i < clients.Length; i++)
+                for (int i = 0; i < clients.Length; i++)
 
-               // for (int i = 0; i < playerNumbers; i++)
+               
                 {
-                      for (int j = 0; j < SendmsgLists.Count; j++)
-                      {
+                    for (int j = 0; j < SendmsgLists.Count; j++)
+                    {
                         if (i != j)
                         {
 
@@ -252,26 +220,26 @@ namespace serveursss
                                      byte[] buffer2s = SendmsgLists[1];
                                      client1.Send(buffer2s);
                                      client2.Send(buffer1s);
-                             *
-                             *
-                             *
+                            
                              *
                              */
 
 
                         }
-               
-                    
+
+
                     }
-            
-                
+
+
                 }
-               
 
 
-                    }
-                //    n++;
+
+            }
+         
 
         }
+
     }
-}
+    }
+

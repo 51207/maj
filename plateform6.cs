@@ -13,10 +13,20 @@ namespace PlateformWithoutMoov
 {
     public partial class Form1 : Form
     {   
-        // player id
+        // **player id**
+        
         int playersID ;
-        int Nbresdejoueurs = 2;
-        public List<Player> listdesplayers0 = new List<Player>();
+
+        //**** initialisation du nombres de joueurs ******
+
+        int Nbresdejoueurs = 0;
+
+
+
+
+        //***** listes des players *****
+
+        public List<Player> listdesplayers0 = new List<Player>(); 
         public void lalistedesplayers()
         {
             listdesplayers0.Add(player1);
@@ -42,23 +52,53 @@ namespace PlateformWithoutMoov
                 player3.Visible = true;
                 label_III.Visible = true;
             }
-          
+            if (Nbresdejoueurs == 5)
+            {
+                listdesplayers0.Add(player5);
+                player5.Visible = true;
+                label_V.Visible = true;
+
+                listdesplayers0.Add(player4);
+                player4.Visible = true;
+                label_IV.Visible = true;
+
+                listdesplayers0.Add(player3);
+                player3.Visible = true;
+                label_III.Visible = true;
+            }
+
         }
 
+
+
+
+
+
+        //*** initialisation de la visibité à false des player3 player
+
+
         List<bool> visibleplayers34 = new List<bool>();
-       
-public void boolplayer()
+        public void boolplayer()
         {
             player3.Visible = false;
             player4.Visible = false;
+            player5.Visible = false;
             label_IV.Visible = false;
             label_III.Visible = false;
-
+            label_V.Visible = false;
         }
       
+
+
+
+
+
         //***** socket ******
         Socket listen;
       
+
+
+
 
 
       //***** connexion socket ******
@@ -76,11 +116,11 @@ public void boolplayer()
                 Console.WriteLine("client connexion");
 
 
-             byte[]   bufid = Encoding.ASCII.GetBytes(Nbresdejoueurs.ToString());
-              listen.Send(bufid);
+            // byte[]   bufid = Encoding.ASCII.GetBytes(Nbresdejoueurs.ToString());
+           //   listen.Send(bufid);
 
-               // byte[] bufid = new byte[1024];
-               bufid = new byte[1024];
+                byte[] bufid = new byte[1024];
+              // bufid = new byte[1024];
 
 
                 int bytecodeid = listen.Receive(bufid);
@@ -93,8 +133,14 @@ public void boolplayer()
                 //ID[1]= correspond à la valeur de l'id qui peut être soit 1 soit 0   ID[0]= nom de l'id qui est ID 
                 //puis on convertit en int la valeur de l'ID
                 playersID = int.Parse(ID[1]);
-                //   int Nbresde = int.Parse(ID[2]);
+              
+                
+                //***** récupération du nombre de joueurs  à partir du serveur : " cvd Nbresdejoueurs n'est plus égale à 0 " *******
 
+                Nbresdejoueurs = int.Parse(ID[2]);
+              
+                
+                //   int Nbresde = int.Parse(ID[2]);
                // bufid = Encoding.ASCII.GetBytes(Nbresdejoueurs.ToString());
               //  listen.Send(bufid);
 
@@ -125,15 +171,20 @@ public void boolplayer()
 
             boolplayer();
             
-            //on initialise la liste des players 
-            lalistedesplayers();
+         
+          
 
             //on initialise les sockets
             initializesocket();
-            
 
-            //on initialise les scores de la liste de score (pour le player 1 et pour le player 2
-          for (int i =0; i<listdesplayers0.Count; i++)
+
+            //on initialise la liste des players 
+            lalistedesplayers();
+
+
+
+            //********* on initialise les scores de la liste de score de tous les joueurs  *********
+            for (int i =0; i<listdesplayers0.Count; i++)
             {
                 listScoreplayers.Add(0);
             }
@@ -313,6 +364,68 @@ public void boolplayer()
                 }
             }
 
+
+            if (Nbresdejoueurs == 5)
+            {
+                if (listdesplayers0[i].Top + listdesplayers0[i].Height > this.ClientSize.Height && listdesplayers0[i + 1].Top + listdesplayers0[i + 1].Height > this.ClientSize.Height && listdesplayers0[i + 2].Top + listdesplayers0[i + 2].Height > this.ClientSize.Height && listdesplayers0[i + 3].Top + listdesplayers0[i + 3].Height > this.ClientSize.Height && listdesplayers0[i + 4].Top + listdesplayers0[i + 4].Height > this.ClientSize.Height )
+                {
+
+                    //if (listdesplayers0[playersID].Top + listdesplayers0[playersID].Height > this.ClientSize.Height && )
+
+
+                    // important: la gravité est 8 
+                    int Score = listScoreplayers[0];
+                    int Score2 = listScoreplayers[1];
+                    int Score3 = 0;
+                    int Score4 = 0;
+                    int Score5 = 0; 
+                    if (player3.Visible == true)
+                    {
+                        Score3 = listScoreplayers[2];
+                        label_III.Text = "III : " + Score3.ToString() + " " + "Points";
+
+                    }
+                    else { label_III.Text = " "; }
+
+                    if (player4.Visible == true)
+                    {
+                        Score4 = listScoreplayers[3];
+                        label_IV.Text = "IV :" + Score4.ToString() + " " + "Points";
+
+                    }
+                    else { label_IV.Text = " "; }
+                    if (player5.Visible == true)
+                    {
+                        Score4 = listScoreplayers[4];
+                        label_V.Text = "IV :" + Score5.ToString() + " " + "Points";
+
+                    }
+                    else { label_V.Text = " "; }
+
+                    label_I.Text = "I : " + Score.ToString() + " " + "Points";
+                    label_II.Text = "II : " + Score2.ToString() + " " + "Points";
+                    //  label_III.Text = "III : " + Score3.ToString();
+                    //    label_IV.Text = "IV :" + Score4.ToString();
+
+                    timer.Stop();
+
+
+                    if (MessageBox.Show("Score final : " + Environment.NewLine + label_I.Text + Environment.NewLine + label_II.Text + Environment.NewLine + label_III.Text + Environment.NewLine + label_IV.Text + Environment.NewLine + label_V.Text, "Game Over", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+                    {
+                        Application.Restart();
+                        // Restart();
+                    }
+
+
+                    else
+                    {
+                        Application.Exit();
+                        Environment.Exit(1);
+                        
+                    }
+
+                }
+            }
 
         }
         
@@ -722,7 +835,7 @@ public void boolplayer()
                                         //  Score -= 1;
 
 
-                                        //element (i+1)  de la liste : on retire 1 point au player(2 ou 3 ou 4) 
+                                      
 
                                         listScoreplayers[i ] -= 1;
 
@@ -898,6 +1011,9 @@ public void boolplayer()
 
 
 
+
+
+
         public string intersect_Right_Left1()
         { 
             string i = "0", k = "0";
@@ -929,6 +1045,7 @@ public void boolplayer()
             return i + ":" + k;
         
         }
+
 
 
 
@@ -1013,6 +1130,9 @@ public void boolplayer()
 
 
 
+
+
+
         // ***** methode permettant de commander les touche *****
 
         protected override void OnKeyDown(KeyEventArgs e)
@@ -1032,6 +1152,8 @@ public void boolplayer()
 
             base.OnKeyDown(e);
         }
+
+
 
 
 
@@ -1328,7 +1450,7 @@ public void boolplayer()
 
 
 
-// ****** changement de couleurs de joueurs ****** 
+// ****** EXIT and INFORMATION ****** 
 
 
         private void cdToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1346,90 +1468,13 @@ public void boolplayer()
        
         }
 
-        private void evilToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-           
-            listdesplayers0[playersID].Image = Properties.Resources.emoji13;
-
-          //  listdesplayers0[playersID].BackColor = Color.FromArgb(128, 128, 255); ;
-        
-    }
-
-        private void multiemoToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            listdesplayers0[playersID].Image = Properties.Resources.emoji10;
-        }
-
-        private void angryToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-        
-            listdesplayers0[playersID+1].Image = Properties.Resources.emoji2;
-           
-        }
-
-        private void coboyToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            listdesplayers0[playersID+1].Image = Properties.Resources.emoji3;
-        }
+      
 
         private void label_I_Click(object sender, EventArgs e)
         {
 
         }
 
-
-
-
-
-
-
-
-        /*  listdesplayers0[playersID].Image = Properties.Resources.emoji71;
-
-              listdesplayers0[playersID].BackColor = Color.FromArgb(128, 128, 255); ;
-
-
-
-        coboy
-            listdesplayers0[playersID].Image = Properties.Resources.emoji3;
-
-
-
-
-            evil
-               listdesplayers0[playersID].Image = Properties.Resources.emoji2;
-
-
-            angry
-                 listdesplayers0[playersID].Image = Properties.Resources.emoji13;
-
-              listdesplayers0[playersID].BackColor = Color.FromArgb(128, 128, 255); ;
-
-
-
-            greenemoji
-                listdesplayers0[playersID].Image = Properties.Resources.emoji5;
-
-
-            blueemoji
-
-              listdesplayers0[playersID].Image = Properties.Resources.emoji1;
-
-              listdesplayers0[playersID].BackColor = Color.FromArgb(128, 128, 255); ;
-
-
-
-
-             Multiemoji
-               listdesplayers0[playersID].Image = Properties.Resources.emoji10;
-
-
-
-
-            classemoji
-               listdesplayers0[playersID].Image = Properties.Resources.emoji71;
-
-              listdesplayers0[playersID].BackColor = Color.FromArgb(128, 128, 255); ;*/
 
 
 
