@@ -143,7 +143,10 @@ namespace ConsoleServeurPG
 
 
             while (true)
-            {
+            {// on boucle à l'infini  pour la reception des données
+
+
+
 
                 //***** reception ******     
 

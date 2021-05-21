@@ -570,6 +570,8 @@ namespace PlateformWithoutMoov
                         // listdesplayers0[playersID+1]% nombredejoueur 
                         if (listdesplayers0[playersID].Bounds.IntersectsWith(item.Bounds))
                             {
+                          
+
                                  a = r.Next(10, (listdesplayers0[(playersID)%Nbresdejoueurs].Parent.ClientSize.Width - 50));
                                  b = r.Next(43, (listdesplayers0[(playersID ) % Nbresdejoueurs].Parent.ClientSize.Height - 50));
                                 item.Location = new Point(a, b);
@@ -577,9 +579,35 @@ namespace PlateformWithoutMoov
                                 s = a.ToString();
                                 q = b.ToString();
 
-                           
-                                
-                            
+                            //tant qu'il ya des intersection=true entre le coins et une des plateform on regenere la pièce
+                            // cette boucle s'éffectue à chaque fois qu'il ya une intersection cad si intersection=true.
+                           //on fait la boucle puisque le coin peut être en collision avec une deuxième autre plateform sinon ça ne marchera que pour une seule intersection
+
+                            bool intersection = true;
+                          
+                            while (intersection)
+                            {
+                                intersection = false;
+                               //initialise intersect à false  
+                               
+                                foreach (Control plat in item.Parent.Controls)
+                                {
+                                    if (plat is PlateForm)
+                                    {
+                                        //si la plateform n'est pas en intersection avec le item= coin alors intersect = false
+                                        //on fait la boucle puisque le coin peut être en collision avec une deuxième autre plateform sinon ça ne marchera que pour le premier
+                                        if (plat.Bounds.IntersectsWith(item.Bounds))
+                                        {
+                                            intersection = true;
+                                            a = r.Next(10, (listdesplayers0[(playersID) % Nbresdejoueurs].Parent.ClientSize.Width - 50));
+                                            b = r.Next(43, (listdesplayers0[(playersID) % Nbresdejoueurs].Parent.ClientSize.Height - 50));
+                                            item.Location = new Point(a, b);
+                                        }
+                                    }
+                                }
+                            }
+
+
                             if (item.AccessibleName == "coin-1")
                                 {
 
@@ -669,7 +697,7 @@ namespace PlateformWithoutMoov
 
                                 }
 
-                          item.BringToFront();
+                       //   item.BringToFront();
 
 
 
@@ -722,7 +750,7 @@ namespace PlateformWithoutMoov
                                     Application.Exit();
                                     Environment.Exit(1);
                                 }
-                                item.BringToFront();
+                              //  item.BringToFront();
 
                             }
                            // item.BringToFront();
@@ -823,8 +851,27 @@ namespace PlateformWithoutMoov
                                 a = r.Next(10, (listdesplayers0[(playersID) % Nbresdejoueurs].Parent.ClientSize.Width - 50));
                                 b = r.Next(43, (listdesplayers0[(playersID) % Nbresdejoueurs].Parent.ClientSize.Height - 50));
                                 item.Location = new Point(a, b);
+                              
+                                bool intersection =true;
+                             //tant qu'il ya des intersections entre le coins et une des plateform on regenere la pièce
+                                while (intersection )
+                                {
+                                    intersection = false; 
 
-
+                                    foreach (Control plat in item.Parent.Controls)
+                                    {
+                                        if (plat is PlateForm)
+                                        {
+                                            if (plat.Bounds.IntersectsWith(item.Bounds))
+                                            {
+                                                intersection = true;
+                                                a = r.Next(10, (listdesplayers0[(playersID) % Nbresdejoueurs].Parent.ClientSize.Width - 50));
+                                                b = r.Next(43, (listdesplayers0[(playersID) % Nbresdejoueurs].Parent.ClientSize.Height - 50));
+                                                item.Location = new Point(a, b);
+                                            }
+                                        }
+                                    }
+                                }
 
                                 if (item.AccessibleName == "coin-1")
                                 {
@@ -894,7 +941,7 @@ namespace PlateformWithoutMoov
 
                             }
 
-                            item.BringToFront();
+                        //    item.BringToFront();
 
 
 
@@ -949,7 +996,7 @@ namespace PlateformWithoutMoov
 
 
 
-                                    item.BringToFront();
+                               //     item.BringToFront();
 
                                 }
 
