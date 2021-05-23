@@ -30,8 +30,16 @@ namespace PlateformWithoutMoov
         public void lalistedesplayers()
         {
             listdesplayers0.Add(player1);
-            listdesplayers0.Add(player2);
-          
+         //   listdesplayers0.Add(player2);
+
+            if (Nbresdejoueurs == 2)
+            {
+                listdesplayers0.Add(player2);
+                player2.Visible = true;
+                label_II.Visible = true;
+
+            }
+
             if (Nbresdejoueurs == 3)
             {
                 listdesplayers0.Add(player3);
@@ -86,6 +94,9 @@ namespace PlateformWithoutMoov
             label_IV.Visible = false;
             label_III.Visible = false;
             label_V.Visible = false;
+           
+            player2.Visible = false;
+            label_II.Visible = false;
         }
       
 
@@ -204,6 +215,77 @@ namespace PlateformWithoutMoov
         public void GameOver()
         {
             int i = 0;
+
+            if (Nbresdejoueurs == 1)
+            {
+                if (listdesplayers0[i].Top + listdesplayers0[i].Height > this.ClientSize.Height )
+                {
+
+                    //if (listdesplayers0[playersID].Top + listdesplayers0[playersID].Height > this.ClientSize.Height && )
+
+
+                    // important: la gravité est 8 
+                    int Score = listScoreplayers[0];
+                    // int Score2 = listScoreplayers[1];
+                    int Score2 = 0;
+                    int Score3 = 0;
+                    int Score4 = 0;
+                    if (player2.Visible == true)
+                    {
+                        Score2 = listScoreplayers[1];
+                        label_II.Text = "II : " + Score2.ToString() + " " + "Points";
+
+                    }
+                    else { label_II.Text = " "; }
+
+
+                    if (player3.Visible == true)
+                    {
+                        Score3 = listScoreplayers[2];
+                        label_III.Text = "III : " + Score3.ToString() + " " + "Points";
+
+                    }
+                    else { label_III.Text = " "; }
+
+                    if (player4.Visible == true)
+                    {
+                        Score4 = listScoreplayers[3];
+                        label_IV.Text = "IV :" + Score4.ToString() + " " + "Points";
+
+                    }
+                    else { label_IV.Text = " "; }
+
+                    label_I.Text = "I : " + Score.ToString() + " " + "Points";
+                    
+                    
+                    //label_II.Text = "II : " + Score2.ToString() + " " + "Points";
+                    //  label_III.Text = "III : " + Score3.ToString();
+                    //    label_IV.Text = "IV :" + Score4.ToString();
+
+                    timer.Stop();
+
+
+                    if (MessageBox.Show("Score final : " + Environment.NewLine + label_I.Text , "Game Over", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+                    {
+                        Application.Restart();
+                        // Restart();
+                    }
+
+
+                    else
+                    {
+                        Application.Exit();
+                        Environment.Exit(1);
+                    }
+
+                }
+            }
+
+
+
+
+
+
             if (Nbresdejoueurs == 2)
             {
                 if (listdesplayers0[i].Top + listdesplayers0[i].Height > this.ClientSize.Height && listdesplayers0[i + 1].Top + listdesplayers0[i + 1].Height > this.ClientSize.Height)
@@ -542,7 +624,7 @@ namespace PlateformWithoutMoov
             
                 int Score = listScoreplayers.ElementAt(playersID);
 
-
+            // .Parent.Controls : on a accès à tous les controls et là on peut faire une condition pour savoir si c'est le coin qu'on est entrain de parler
                 foreach (Control item in listdesplayers0[playersID].Parent.Controls)
                 { //Control item in player1.Parent.controls
 
@@ -713,9 +795,20 @@ namespace PlateformWithoutMoov
 
 
                                 int Scores = listScoreplayers[0];
-                                int Score2 = listScoreplayers[1];
+                                //int Score2 = listScoreplayers[1];
+                                int Score2 = 0;
                                 int Score3 = 0;
                                 int Score4 = 0;
+                                if (player2.Visible == true)
+                                {
+                                    Score2 = listScoreplayers[1];
+                                    label_II.Text = "II : " + Score2.ToString() + " " + "Points";
+
+                                }
+                                else { label_II.Text = " "; }
+
+
+
                                 if (player3.Visible == true)
                                 {
                                     Score3 = listScoreplayers[2];
@@ -956,9 +1049,19 @@ namespace PlateformWithoutMoov
                                     timer.Stop();
 
                                     int Scores = listScoreplayers[0];
-                                    int Score2 = listScoreplayers[1];
+                                    //int Score2 = listScoreplayers[1];
+                                    int Score2 = 0;
                                     int Score3 = 0;
                                     int Score4 = 0;
+
+                                    if (player2.Visible == true)
+                                    {
+                                        Score2 = listScoreplayers[1];
+                                        label_II.Text = "III : " + Score2.ToString() + " " + "Points";
+
+                                    }
+                                    else { label_II.Text = " "; }
+
                                     if (player3.Visible == true)
                                     {
                                         Score3 = listScoreplayers[2];
@@ -1233,258 +1336,314 @@ namespace PlateformWithoutMoov
 
 
 
-    
+        public void Soloplayer()
+        { //methode permettant de jouer solo sans devoir envoyer les données des au serveur des différentes positions
+
+            if (listdesplayers0.Count == 1)
+            {
+                //**intersection **
+
+                intersect_Low_High1();
+
+                intersect_Right_Left1();
+
+                timerlabel1.starttimer();
 
 
-        
+
+
+
+                //***** mouvements des joueurs *****
+
+                string movement = listdesplayers0[playersID].movement();
+
+
+
+
+                //   player2.movement();
+
+
+
+
+                //***** collision plateforme *****
+                //string plate = collisionPlatform2listplayers();//player1.collisionPlatform1();
+                string plate = listdesplayers0[playersID].collisionPlatform1(); ;
+
+
+
+                //*****  score player 1 ****** 
+
+                int Score = listScoreplayers[0];
+
+                label_I.Text = Score.ToString();
+
+                // *****  coin ******
+
+                //string coin =  collisionCoins1();
+                string valcoins = collisionCoinsPlayer1(); //collisionCoins();
+                GameOver();
+
+            }
+        }
+
+
+
 
 
 
         //***** timer tick *****
-       
+
         private void timer_Tick(object sender, EventArgs e)
             {
-
-         //   bool goleft=false, goright=false, gojump=false; 
-        
-
-
-            //**intersection **
-
-            intersect_Low_High1();
+            // *** soloplayer qui permet de ne pas envoyer d'information au serveur
             
-            intersect_Right_Left1();
-            
-            timerlabel1.starttimer();
-               
+            Soloplayer();
             
             
+            //   bool goleft=false, goright=false, gojump=false; 
             
-            
-            //***** mouvements des joueurs *****
-            
-            string movement = listdesplayers0[playersID].movement();
+            //**** si on veut 2....à 5 joueurs
 
-
-
-
-            //   player2.movement();
-
-
-
-
-            //***** collision plateforme *****
-            //string plate = collisionPlatform2listplayers();//player1.collisionPlatform1();
-            string plate = listdesplayers0[playersID].collisionPlatform1();;
-
-
-
-            //*****  score player 1 ****** 
-
-           int  Score = listScoreplayers[0];
-            
-            label_I.Text = Score.ToString();
-
-
-
-            //****** score player2 ******
-
-           int Score2 = listScoreplayers[1];
-            label_II.Text = Score2.ToString();
-
-
-
-
-
-
-
-
-
-
-
-
-            // *****  coin ******
-
-            //string coin =  collisionCoins1();
-            string valcoins = collisionCoinsPlayer1(); //collisionCoins();
-
-
-
-      
-        
-
-            //****** buffer à envoyer au serveur ******
-           
-            
-            
-          //  byte[] buffer = Encoding.ASCII.GetBytes(movement + "/" + plate + "/" + valcoins + "/" + labelscore.Text);
-            byte[] buffer = Encoding.ASCII.GetBytes(movement + "/" + plate + "/" + valcoins );
-            //listen.RemoteEndPoint.ToString()
-
-
-
-
-
-            // **** on envoie le buffer ****
-
-            listen.Send(buffer);
-            
-            GameOver();
-
-
-
-
-
-            // **** buffer receptions du buffer *****
-
-
-
-            for (int i = 0; i < listdesplayers0.Count; i++)
+            if (listdesplayers0.Count > 1)
             {
-                bool goleft = false, goright = false, gojump = false;
-                if (i == playersID)
+
+
+                //**intersection **
+
+                intersect_Low_High1();
+
+                intersect_Right_Left1();
+
+                timerlabel1.starttimer();
+
+
+
+
+
+                //***** mouvements des joueurs *****
+
+                string movement = listdesplayers0[playersID].movement();
+
+
+
+
+                //   player2.movement();
+
+
+
+
+                //***** collision plateforme *****
+                //string plate = collisionPlatform2listplayers();//player1.collisionPlatform1();
+                string plate = listdesplayers0[playersID].collisionPlatform1(); ;
+
+
+
+                //*****  score player 1 ****** 
+
+                int Score = listScoreplayers[0];
+
+                label_I.Text = Score.ToString();
+
+
+
+                //****** score player2 ******
+
+                int Score2 = listScoreplayers[1];
+                label_II.Text = Score2.ToString();
+
+
+
+
+
+
+
+
+
+
+
+
+                // *****  coin ******
+
+                //string coin =  collisionCoins1();
+                string valcoins = collisionCoinsPlayer1(); //collisionCoins();
+
+
+
+
+
+
+                //****** buffer à envoyer au serveur ******
+
+
+
+                //  byte[] buffer = Encoding.ASCII.GetBytes(movement + "/" + plate + "/" + valcoins + "/" + labelscore.Text);
+                byte[] buffer = Encoding.ASCII.GetBytes(movement + "/" + plate + "/" + valcoins);
+                //listen.RemoteEndPoint.ToString()
+
+
+
+
+
+                // **** on envoie le buffer ****
+
+                listen.Send(buffer);
+
+                GameOver();
+
+
+
+
+
+                // **** buffer receptions du buffer *****
+
+
+
+                for (int i = 0; i < listdesplayers0.Count; i++)
                 {
-                    continue;
-                }
-                else
-                {
-                    byte[] buf2 = new byte[1024];
+                    bool goleft = false, goright = false, gojump = false;
+                    if (i == playersID)
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        byte[] buf2 = new byte[1024];
 
-                    int bytecode = listen.Receive(buf2);
-
-
-                    string msg = Encoding.ASCII.GetString(buf2, 0, bytecode);
-
-                    buffer = Encoding.ASCII.GetBytes("ok player"+i);
-
-                    listen.Send(buffer);
-
-                    //*** premier split ***
-
-                    string[] data = msg.Split('/');
+                        int bytecode = listen.Receive(buf2);
 
 
+                        string msg = Encoding.ASCII.GetString(buf2, 0, bytecode);
 
-                    string movement1 = data[0];
+                        buffer = Encoding.ASCII.GetBytes("ok player" + i);
+
+                        listen.Send(buffer);
+
+                        //*** premier split ***
+
+                        string[] data = msg.Split('/');
 
 
-                   
+
+                        string movement1 = data[0];
+
+
+
                         string platef = data[1];
-                
-
-
-
-                    string coin1 = data[2];
 
 
 
 
-                    //     string score1 = data[3];
-
-
-                    //*** deuxième split ***
-
-                    string[] moov = movement1.Split(':');
-
-
-                    //** left **
-
-                    if (moov[0] == "1")
-                    {
-
-                        goleft = true;
-
-                    }
+                        string coin1 = data[2];
 
 
 
-                    //** right **
 
-                    if (moov[1] == "1")
-                    {
-
-                        goright = true;
-
-                    }
+                        //     string score1 = data[3];
 
 
-                    //**Jump**
+                        //*** deuxième split ***
 
-                    if (moov[2] == "0")
-                    {
-
-                        gojump = false;
-                    }
+                        string[] moov = movement1.Split(':');
 
 
-                    if (moov[2] == "1")
-                    {
+                        //** left **
 
-                        gojump = true;
-                    }
-
-
-                    if (moov[2] == "2")
-                    {
-
-                        gojump = false;
-                    }
-
-
-                     listdesplayers0[(i) ].movement();
-                   /* for (int j = 0; j < listdesplayers0.Count; j++)
-                    {
-
-                        if (j != playersID)
+                        if (moov[0] == "1")
                         {
 
-                            listdesplayers0[(j) % Nbresdejoueurs].movement();
+                            goleft = true;
+
                         }
-                    }*/
-
-                    moovotherplayer(goleft, goright, gojump, i);
 
 
 
+                        //** right **
 
-                    //recuperation valeur coin
-                    string[] coinsplit = coin1.Split(':');
-                    int a = Int32.Parse(coinsplit[0]);
-                    int b = Int32.Parse(coinsplit[1]);
+                        if (moov[1] == "1")
+                        {
 
+                            goright = true;
 
-                   
-
-                    collisionCoinsplayer2(a, b);
-                  
-
-
-              
-                }
-            }
-
-
-
-
-
-                    for (int i = 0; i < listdesplayers0.Count; i++)
-                    {
-                        //Player item = listdesplayers0.ElementAt(i);
-                        if (i != playersID)
-                        { // ça ne conerne pas  donc lisdesplayers[playerID] , ça concerne les autres
-
-                            listdesplayers0[(i)].collisionPlatform1();
-                            // item.collisionPlatform1();
                         }
+
+
+                        //**Jump**
+
+                        if (moov[2] == "0")
+                        {
+
+                            gojump = false;
+                        }
+
+
+                        if (moov[2] == "1")
+                        {
+
+                            gojump = true;
+                        }
+
+
+                        if (moov[2] == "2")
+                        {
+
+                            gojump = false;
+                        }
+
+
+                        listdesplayers0[(i)].movement();
+                        /* for (int j = 0; j < listdesplayers0.Count; j++)
+                         {
+
+                             if (j != playersID)
+                             {
+
+                                 listdesplayers0[(j) % Nbresdejoueurs].movement();
+                             }
+                         }*/
+
+                        moovotherplayer(goleft, goright, gojump, i);
+
+
+
+
+                        //recuperation valeur coin
+                        string[] coinsplit = coin1.Split(':');
+                        int a = Int32.Parse(coinsplit[0]);
+                        int b = Int32.Parse(coinsplit[1]);
+
+
+
+
+                        collisionCoinsplayer2(a, b);
+
+
+
+
                     }
+                }
 
 
 
 
 
-                
+                for (int i = 0; i < listdesplayers0.Count; i++)
+                {
+                    //Player item = listdesplayers0.ElementAt(i);
+                    if (i != playersID)
+                    { // ça ne conerne pas  donc lisdesplayers[playerID] , ça concerne les autres
 
-            
+                        listdesplayers0[(i)].collisionPlatform1();
+                        // item.collisionPlatform1();
+                    }
+                }
+
+
+
+
+
+
+
+            }   
 
         }
 
