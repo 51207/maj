@@ -19,7 +19,7 @@ namespace PlateformWithoutMoov
 
         //**** initialisation du nombres de joueurs ******
 
-        int Nbresdejoueurs = 0;
+        int Nbresdejoueurs = 1;
 
 
 
@@ -45,7 +45,7 @@ namespace PlateformWithoutMoov
                 listdesplayers0.Add(player3);
                 player3.Visible = true;
                 label_III.Visible = true;
-                
+
                 listdesplayers0.Add(player2);
                 player2.Visible = true;
                 label_II.Visible = true;
@@ -219,11 +219,8 @@ namespace PlateformWithoutMoov
 
 
 
-
-
-
-
         //***** game over *****
+
         public void GameOver()
         {
             int i = 0;
@@ -279,13 +276,19 @@ namespace PlateformWithoutMoov
 
                     if (MessageBox.Show("Score final : " + Environment.NewLine + label_I.Text, "Game Over", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
                     {
+
+
                         Application.Restart();
-                        // Restart();
+                        //l'application va rédemarrer tout en sachant que le nbredejoueur est à 1 ca il a été initialisé
+
                     }
 
 
                     else
                     {
+
+
+
                         Application.Exit();
                         Environment.Exit(1);
                     }
@@ -337,13 +340,20 @@ namespace PlateformWithoutMoov
 
                     if (MessageBox.Show("Score final : " + Environment.NewLine + label_I.Text + Environment.NewLine + label_II.Text + Environment.NewLine + label_III.Text + Environment.NewLine + label_IV.Text, "Game Over", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
                     {
-                        Application.Restart();
-                        // Restart();
+
+                        //***** on envoie l'information au serveur qu'on arrête de jouer*****
+                        byte[] buffer = Encoding.ASCII.GetBytes("RESTART");
+                        listen.Send(buffer);
+                        Application.Exit();
+                        Environment.Exit(1);
                     }
 
 
                     else
                     {
+                        byte[] buffer = Encoding.ASCII.GetBytes("EXIT");
+                        listen.Send(buffer);
+                        Application.Exit();
                         Environment.Exit(1);
                     }
 
@@ -390,13 +400,19 @@ namespace PlateformWithoutMoov
 
                     if (MessageBox.Show("Score final : " + Environment.NewLine + label_I.Text + Environment.NewLine + label_II.Text + Environment.NewLine + label_III.Text + Environment.NewLine + label_IV.Text, "Game Over", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
                     {
-                        Application.Restart();
-                        // Restart();
+                        //***** on envoie l'information au serveur qu'on arrête de jouer*****
+                        byte[] buffer = Encoding.ASCII.GetBytes("RESTART");
+                        listen.Send(buffer);
+
+                        Application.Exit();
+                        Environment.Exit(1);
                     }
 
 
                     else
                     {
+                        byte[] buffer = Encoding.ASCII.GetBytes("EXIT");
+                        listen.Send(buffer);
                         Application.Exit();
                         Environment.Exit(1);
                     }
@@ -445,13 +461,20 @@ namespace PlateformWithoutMoov
 
                     if (MessageBox.Show("Score final : " + Environment.NewLine + label_I.Text + Environment.NewLine + label_II.Text + Environment.NewLine + label_III.Text + Environment.NewLine + label_IV.Text, "Game Over", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
                     {
-                        Application.Restart();
-                        // Restart();
+                        //***** on envoie l'information au serveur qu'on arrête de jouer*****
+                        byte[] buffer = Encoding.ASCII.GetBytes("RESTART");
+                        listen.Send(buffer);
+
+                        Application.Exit();
+                        Environment.Exit(1);
                     }
 
 
                     else
                     {
+                        byte[] buffer = Encoding.ASCII.GetBytes("EXIT");
+                        listen.Send(buffer);
+                        Application.Exit();
                         Environment.Exit(1);
                     }
 
@@ -506,13 +529,19 @@ namespace PlateformWithoutMoov
 
                     if (MessageBox.Show("Score final : " + Environment.NewLine + label_I.Text + Environment.NewLine + label_II.Text + Environment.NewLine + label_III.Text + Environment.NewLine + label_IV.Text + Environment.NewLine + label_V.Text, "Game Over", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
                     {
-                        Application.Restart();
-                        // Restart();
+                        //***** on envoie l'information au serveur qu'on arrête de jouer*****
+                        byte[] buffer = Encoding.ASCII.GetBytes("RESTART");
+                        listen.Send(buffer);
+
+                        Application.Exit();
+                        Environment.Exit(1);
                     }
 
 
                     else
                     {
+                        byte[] buffer = Encoding.ASCII.GetBytes("EXIT");
+                        listen.Send(buffer);
                         Application.Exit();
                         Environment.Exit(1);
 
@@ -522,6 +551,8 @@ namespace PlateformWithoutMoov
             }
 
         }
+
+
 
 
 
@@ -1511,127 +1542,152 @@ namespace PlateformWithoutMoov
                 // **** buffer receptions du buffer *****
 
 
-
-                for (int i = 0; i < listdesplayers0.Count; i++)
+                try
                 {
-                    bool goleft = false, goright = false, gojump = false;
-                    if (i == playersID)
+
+                    for (int i = 0; i < listdesplayers0.Count; i++)
                     {
-                        continue;
+                        bool goleft = false, goright = false, gojump = false;
+                        if (i == playersID)
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            byte[] buf2 = new byte[1024];
+
+                            int bytecode = listen.Receive(buf2);
+
+
+
+
+                            string msg = Encoding.ASCII.GetString(buf2, 0, bytecode);
+
+
+
+
+
+
+                            if (msg == "RESTART" || msg == "EXIT")
+                            {
+                                Application.Exit();
+                                Environment.Exit(1);
+
+
+                            }
+                            else
+                            {
+
+
+                                //*** premier split ***
+
+                                string[] data = msg.Split('/');
+
+
+
+                                string movement1 = data[0];
+
+
+
+                                string platef = data[1];
+
+
+
+
+                                string coin1 = data[2];
+
+
+
+
+                                //     string score1 = data[3];
+
+
+                                //*** deuxième split ***
+
+                                string[] moov = movement1.Split(':');
+
+
+                                //** left **
+
+                                if (moov[0] == "1")
+                                {
+
+                                    goleft = true;
+
+                                }
+
+
+
+                                //** right **
+
+                                if (moov[1] == "1")
+                                {
+
+                                    goright = true;
+
+                                }
+
+
+                                //**Jump**
+
+                                if (moov[2] == "0")
+                                {
+
+                                    gojump = false;
+                                }
+
+
+                                if (moov[2] == "1")
+                                {
+
+                                    gojump = true;
+                                }
+
+
+                                if (moov[2] == "2")
+                                {
+
+                                    gojump = false;
+                                }
+
+
+                                listdesplayers0[(i)].movement();
+                                /* for (int j = 0; j < listdesplayers0.Count; j++)
+                                 {
+                                     if (j != playersID)
+                                     {
+                                         listdesplayers0[(j) % Nbresdejoueurs].movement();
+                                     }
+                                 }*/
+
+                                moovotherplayer(goleft, goright, gojump, i);
+
+
+
+
+                                //recuperation valeur coin
+                                string[] coinsplit = coin1.Split(':');
+                                int a = Int32.Parse(coinsplit[0]);
+                                int b = Int32.Parse(coinsplit[1]);
+
+
+
+
+                                collisionCoinsplayer2(a, b);
+
+
+
+
+                                buffer = Encoding.ASCII.GetBytes("ok player" + i);
+
+                                listen.Send(buffer);
+                            }
+                            }
                     }
-                    else
-                    {
-                        byte[] buf2 = new byte[1024];
-
-                        int bytecode = listen.Receive(buf2);
-
-
-                        string msg = Encoding.ASCII.GetString(buf2, 0, bytecode);
-
-                        buffer = Encoding.ASCII.GetBytes("ok player" + i);
-
-                        listen.Send(buffer);
-
-                        //*** premier split ***
-
-                        string[] data = msg.Split('/');
-
-
-
-                        string movement1 = data[0];
-
-
-
-                        string platef = data[1];
-
-
-
-
-                        string coin1 = data[2];
-
-
-
-
-                        //     string score1 = data[3];
-
-
-                        //*** deuxième split ***
-
-                        string[] moov = movement1.Split(':');
-
-
-                        //** left **
-
-                        if (moov[0] == "1")
-                        {
-
-                            goleft = true;
-
-                        }
-
-
-
-                        //** right **
-
-                        if (moov[1] == "1")
-                        {
-
-                            goright = true;
-
-                        }
-
-
-                        //**Jump**
-
-                        if (moov[2] == "0")
-                        {
-
-                            gojump = false;
-                        }
-
-
-                        if (moov[2] == "1")
-                        {
-
-                            gojump = true;
-                        }
-
-
-                        if (moov[2] == "2")
-                        {
-
-                            gojump = false;
-                        }
-
-
-                        listdesplayers0[(i)].movement();
-                        /* for (int j = 0; j < listdesplayers0.Count; j++)
-                         {
-                             if (j != playersID)
-                             {
-                                 listdesplayers0[(j) % Nbresdejoueurs].movement();
-                             }
-                         }*/
-
-                        moovotherplayer(goleft, goright, gojump, i);
-
-
-
-
-                        //recuperation valeur coin
-                        string[] coinsplit = coin1.Split(':');
-                        int a = Int32.Parse(coinsplit[0]);
-                        int b = Int32.Parse(coinsplit[1]);
-
-
-
-
-                        collisionCoinsplayer2(a, b);
-
-
-
-
-                    }
+                }catch(SocketException eraz)
+                {
+                    Application.Exit();
+                    Environment.Exit(1);
                 }
 
 
