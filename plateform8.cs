@@ -338,25 +338,28 @@ namespace PlateformWithoutMoov
                     timer.Stop();
 
 
-                    if (MessageBox.Show("Score final : " + Environment.NewLine + label_I.Text + Environment.NewLine + label_II.Text + Environment.NewLine + label_III.Text + Environment.NewLine + label_IV.Text, "Game Over", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+                    if (MessageBox.Show("Score final : " + Environment.NewLine + label_I.Text + Environment.NewLine + label_II.Text + Environment.NewLine + label_III.Text + Environment.NewLine + label_IV.Text, "Game Over", MessageBoxButtons.OK, MessageBoxIcon.Warning) == DialogResult.OK)
                     {
 
                         //***** on envoie l'information au serveur qu'on arrête de jouer*****
-                        byte[] buffer = Encoding.ASCII.GetBytes("RESTART");
-                        listen.Send(buffer);
+                        //byte[] buffer = Encoding.ASCII.GetBytes("RESTART");
+                      //  listen.Send(buffer);
+
+                        //  Application.Exit();
+                        //    Environment.Exit(1);
+
+
+
+
+                        // byte[] buffer = Encoding.ASCII.GetBytes("EXIT");
+                        //   listen.Send(buffer);
+
+
                         Application.Exit();
                         Environment.Exit(1);
+
                     }
-
-
-                    else
-                    {
-                        byte[] buffer = Encoding.ASCII.GetBytes("EXIT");
-                        listen.Send(buffer);
-                        Application.Exit();
-                        Environment.Exit(1);
-                    }
-
+                    
                 }
             }
 
@@ -398,23 +401,23 @@ namespace PlateformWithoutMoov
                     timer.Stop();
 
 
-                    if (MessageBox.Show("Score final : " + Environment.NewLine + label_I.Text + Environment.NewLine + label_II.Text + Environment.NewLine + label_III.Text + Environment.NewLine + label_IV.Text, "Game Over", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+                    if (MessageBox.Show("Score final : " + Environment.NewLine + label_I.Text + Environment.NewLine + label_II.Text + Environment.NewLine + label_III.Text + Environment.NewLine + label_IV.Text, "Game Over", MessageBoxButtons.OK, MessageBoxIcon.Warning) == DialogResult.OK)
                     {
                         //***** on envoie l'information au serveur qu'on arrête de jouer*****
-                        byte[] buffer = Encoding.ASCII.GetBytes("RESTART");
-                        listen.Send(buffer);
+                      //  byte[] buffer = Encoding.ASCII.GetBytes("RESTART");
+                    //    listen.Send(buffer);
 
                         Application.Exit();
                         Environment.Exit(1);
-                    }
+                    //}
 
 
-                    else
-                    {
-                        byte[] buffer = Encoding.ASCII.GetBytes("EXIT");
-                        listen.Send(buffer);
-                        Application.Exit();
-                        Environment.Exit(1);
+                    //else
+                    //{
+                      /*  byte[] buffer = Encoding.ASCII.GetBytes("EXIT");
+                        //listen.Send(buffer);
+                        //Application.Exit();
+                        //Environment.Exit(1);*/
                     }
 
                 }
@@ -459,24 +462,23 @@ namespace PlateformWithoutMoov
                     timer.Stop();
 
 
-                    if (MessageBox.Show("Score final : " + Environment.NewLine + label_I.Text + Environment.NewLine + label_II.Text + Environment.NewLine + label_III.Text + Environment.NewLine + label_IV.Text, "Game Over", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+                    if (MessageBox.Show("Score final : " + Environment.NewLine + label_I.Text + Environment.NewLine + label_II.Text + Environment.NewLine + label_III.Text + Environment.NewLine + label_IV.Text, "Game Over", MessageBoxButtons.OK, MessageBoxIcon.Warning) == DialogResult.OK)
                     {
                         //***** on envoie l'information au serveur qu'on arrête de jouer*****
-                        byte[] buffer = Encoding.ASCII.GetBytes("RESTART");
-                        listen.Send(buffer);
+                      //  byte[] buffer = Encoding.ASCII.GetBytes("RESTART");
+                        //listen.Send(buffer);
 
                         Application.Exit();
                         Environment.Exit(1);
                     }
 
 
-                    else
-                    {
-                        byte[] buffer = Encoding.ASCII.GetBytes("EXIT");
+                   
+                      /*  byte[] buffer = Encoding.ASCII.GetBytes("EXIT");
                         listen.Send(buffer);
                         Application.Exit();
                         Environment.Exit(1);
-                    }
+*/                    
 
                 }
             }
@@ -527,25 +529,24 @@ namespace PlateformWithoutMoov
                     timer.Stop();
 
 
-                    if (MessageBox.Show("Score final : " + Environment.NewLine + label_I.Text + Environment.NewLine + label_II.Text + Environment.NewLine + label_III.Text + Environment.NewLine + label_IV.Text + Environment.NewLine + label_V.Text, "Game Over", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+                    if (MessageBox.Show("Score final : " + Environment.NewLine + label_I.Text + Environment.NewLine + label_II.Text + Environment.NewLine + label_III.Text + Environment.NewLine + label_IV.Text + Environment.NewLine + label_V.Text, "Game Over", MessageBoxButtons.OK, MessageBoxIcon.Warning) == DialogResult.OK)
                     {
                         //***** on envoie l'information au serveur qu'on arrête de jouer*****
-                        byte[] buffer = Encoding.ASCII.GetBytes("RESTART");
-                        listen.Send(buffer);
+                        /*    byte[] buffer = Encoding.ASCII.GetBytes("RESTART");
+                            listen.Send(buffer);
+
+                            Application.Exit();
+                            Environment.Exit(1);
+    */
+
+                   //     timerlabel1.starttimer();
 
                         Application.Exit();
                         Environment.Exit(1);
                     }
 
 
-                    else
-                    {
-                        byte[] buffer = Encoding.ASCII.GetBytes("EXIT");
-                        listen.Send(buffer);
-                        Application.Exit();
-                        Environment.Exit(1);
-
-                    }
+                  
 
                 }
             }
@@ -872,23 +873,17 @@ namespace PlateformWithoutMoov
                                 label_II.Text = "II : " + Score2.ToString() + " " + "Points";
 
 
-                                if (MessageBox.Show("Score final : " + Environment.NewLine + label_I.Text + Environment.NewLine + label_II.Text + Environment.NewLine + label_III.Text + Environment.NewLine + label_IV.Text, "FINISH", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+                                if (MessageBox.Show("Score final : " + Environment.NewLine + label_I.Text + Environment.NewLine + label_II.Text + Environment.NewLine + label_III.Text + Environment.NewLine + label_IV.Text, "FINISH", MessageBoxButtons.OK, MessageBoxIcon.Warning) == DialogResult.OK)
                                 {
-                                    Application.Restart();
-                                    Restart();
-                                    timerlabel1.starttimer();
+                                   
 
-                                }
-
-
-                                else
-                                {
                                     Application.Exit();
                                     Environment.Exit(1);
-                                }
-                                //  item.BringToFront();
 
+                                    //  item.BringToFront();
+                                }
                             }
+                            
                             // item.BringToFront();
 
                         }
@@ -1125,21 +1120,14 @@ namespace PlateformWithoutMoov
                                     label_II.Text = "II : " + Score2.ToString() + " " + "Points";
 
 
-                                    if (MessageBox.Show("Score final : " + Environment.NewLine + label_I.Text + Environment.NewLine + label_II.Text + Environment.NewLine + label_III.Text + Environment.NewLine + label_IV.Text, "FINISH", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+                                    if (MessageBox.Show("Score final : " + Environment.NewLine + label_I.Text + Environment.NewLine + label_II.Text + Environment.NewLine + label_III.Text + Environment.NewLine + label_IV.Text, "FINISH", MessageBoxButtons.OK, MessageBoxIcon.Warning) == DialogResult.OK)
                                     {
-                                        Application.Restart();
-                                        Restart();
-                                        timerlabel1.starttimer();
-
-                                    }
-
-
-                                    else
-                                    {
+                                        //Application.Restart();
+                                        //Restart();
+                                       // timerlabel1.starttimer();
                                         Application.Exit();
                                         Environment.Exit(1);
                                     }
-
 
 
                                     //     item.BringToFront();
@@ -1570,6 +1558,10 @@ namespace PlateformWithoutMoov
 
                             if (msg == "RESTART" || msg == "EXIT")
                             {
+                                byte[] bfs12 = Encoding.ASCII.GetBytes("OK");
+                                listen.Send(bfs12);
+
+
                                 Application.Exit();
                                 Environment.Exit(1);
 
