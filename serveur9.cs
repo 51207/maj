@@ -163,70 +163,8 @@ namespace ConsoleServeurPG
                         string msg = Encoding.ASCII.GetString(buffersrecept, 0, bytecodes);
                         ReceptmsgLists[i] = msg;
 
-                        if (msg == "RESTART")
-                        {
-                            for (int j = 0; j < ReceptmsgLists.Count; j++)
-                            {
-
-                                byte[] bufs1 = Encoding.ASCII.GetBytes(msg);
-                                clients[j].Send(bufs1);
-
-                                Console.WriteLine("message Restart envoyé");
-
-
-
-                                // Application.Exit();
-                            }
-                            Application.Restart();
-                            //**permet de fermer l'application precedente qui était ouverte  et laisser ouverte la nouvelle application     
-                            //  Application.Exit();
-                            Environment.Exit(1);
-
-                        }else if (msg == "EXIT") { Environment.Exit(1); Application.Exit(); }
-
-                        /*   if (msg == "RESTART")
-                        {
-                            for (int j = 0; j < ReceptmsgLists.Count; j++)
-                            {
-
-                                    byte[] bufs1 = Encoding.ASCII.GetBytes(msg);
-                                    clients[j].Send(bufs1);
-
-                                    Console.WriteLine("message Restart envoyé");
-                                
-
-
-                                // Application.Exit();
-                            }
-                            Application.Restart();
-                            //**permet de fermer l'application precedente qui était ouverte  et laisser ouverte la nouvelle application     
-                          //  Application.Exit();
-                            Environment.Exit(1);
-
-                        }
-
-                        else if (msg == "EXIT")
-                        {
-                            for (int j = 0; j < ReceptmsgLists.Count; j++)
-                            {
-
-                              //  if (clients[j].Connected == true)
-                                //{
-
-                                    byte[] bufs1 = Encoding.ASCII.GetBytes(msg);
-                                    clients[j].Send(bufs1);
-
-                                    Console.WriteLine("message Restart envoyé");
-                                }
-
-
-
-                            //}
-                            //**permet de fermer l'application
-                            Application.Exit();
-                            Environment.Exit(1);
-                        }*/
-
+                      
+                       
 
 
 

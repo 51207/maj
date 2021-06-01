@@ -1,3 +1,5 @@
+
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -85,12 +87,13 @@ namespace PlateformWithoutMoov
                 listdesplayers0.Add(player2);
                 player2.Visible = true;
                 label_II.Visible = true;
+
+
+             
+            
             }
 
         }
-
-
-
 
 
 
@@ -100,6 +103,9 @@ namespace PlateformWithoutMoov
         List<bool> visibleplayers34 = new List<bool>();
         public void boolplayer()
         {
+           // Labelidentity.Visible = false;
+
+            
             player3.Visible = false;
             player4.Visible = false;
             player5.Visible = false;
@@ -109,17 +115,21 @@ namespace PlateformWithoutMoov
 
             player2.Visible = false;
             label_II.Visible = false;
+
+
+          
         }
 
 
 
 
 
-
+        
         //***** socket ******
         Socket listen;
 
-
+        //***corser le jeu***
+        EventScore eventScore = new EventScore();
 
 
 
@@ -157,6 +167,7 @@ namespace PlateformWithoutMoov
                 //puis on convertit en int la valeur de l'ID
                 playersID = int.Parse(ID[1]);
 
+                
 
                 //***** récupération du nombre de joueurs  à partir du serveur : " cvd Nbresdejoueurs n'est plus égale à 0 " *******
 
@@ -200,6 +211,13 @@ namespace PlateformWithoutMoov
             //on initialise les sockets
             initializesocket();
 
+          
+
+
+            //***** identité du joueur *****
+            Identitylabel Identity = new Identitylabel();
+            Labelidentity.Text = Identity.identitylabel(playersID);
+          
 
             //on initialise la liste des players 
             lalistedesplayers();
@@ -223,7 +241,7 @@ namespace PlateformWithoutMoov
 
         public void GameOver()
         {
-            int i = 0;
+            int i = 0; 
 
             if (Nbresdejoueurs == 1)
             {
@@ -277,7 +295,7 @@ namespace PlateformWithoutMoov
                     if (MessageBox.Show("Score final : " + Environment.NewLine + label_I.Text, "Game Over", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
                     {
 
-
+                       
                         Application.Restart();
                         //l'application va rédemarrer tout en sachant que le nbredejoueur est à 1 ca il a été initialisé
 
@@ -342,8 +360,8 @@ namespace PlateformWithoutMoov
                     {
 
                         //***** on envoie l'information au serveur qu'on arrête de jouer*****
-                        //byte[] buffer = Encoding.ASCII.GetBytes("RESTART");
-                      //  listen.Send(buffer);
+                        //byte[] buffer = Encoding.ASCII.GetBytes("GAMEOVER");
+                         // listen.Send(buffer);
 
                         //  Application.Exit();
                         //    Environment.Exit(1);
@@ -353,7 +371,7 @@ namespace PlateformWithoutMoov
 
                         // byte[] buffer = Encoding.ASCII.GetBytes("EXIT");
                         //   listen.Send(buffer);
-
+                        
 
                         Application.Exit();
                         Environment.Exit(1);
@@ -550,7 +568,7 @@ namespace PlateformWithoutMoov
 
                 }
             }
-
+           
         }
 
 
@@ -561,7 +579,7 @@ namespace PlateformWithoutMoov
 
 
 
-        //****** Restart ******
+     /*   //****** Restart ******
         private void Restart()
         {
             listdesplayers0[playersID].Jump = false;
@@ -618,7 +636,7 @@ namespace PlateformWithoutMoov
 
             }
 
-        }
+        }*/
 
 
 
@@ -814,11 +832,11 @@ namespace PlateformWithoutMoov
 
                             {
 
-                                EventScore eventScore = new EventScore();
 
-                                eventScore.WinScore = "On va corser un peu plus le choses";
 
-                                labelscore30.Text = eventScore.WinScore;
+                                labelScoresup30.Text = eventScore.WinScore;
+                            
+                            
                             }
 
                         }
@@ -1061,11 +1079,10 @@ namespace PlateformWithoutMoov
                                 if (item1.Bounds.IntersectsWith(item.Bounds) && (Score >= 30))
                                 {
 
-                                    EventScore eventScore = new EventScore();
 
-                                    eventScore.WinScore = "On va corser un peu plus le choses";
 
-                                    labelscore30.Text = eventScore.WinScore;
+                                    labelScoresup30.Text = eventScore.WinScore;
+                                   
 
 
                                 }
@@ -1510,7 +1527,7 @@ namespace PlateformWithoutMoov
 
 
                 //  byte[] buffer = Encoding.ASCII.GetBytes(movement + "/" + plate + "/" + valcoins + "/" + labelscore.Text);
-                byte[] buffer = Encoding.ASCII.GetBytes(movement + "/" + plate + "/" + valcoins);
+                byte[] buffer = Encoding.ASCII.GetBytes(movement + "/" + plate + "/" + valcoins );
                 //listen.RemoteEndPoint.ToString()
 
 
@@ -1589,7 +1606,7 @@ namespace PlateformWithoutMoov
                                 string coin1 = data[2];
 
 
-
+                               
 
                                 //     string score1 = data[3];
 
@@ -1597,6 +1614,10 @@ namespace PlateformWithoutMoov
                                 //*** deuxième split ***
 
                                 string[] moov = movement1.Split(':');
+
+
+                             
+
 
 
                                 //** left **
@@ -1667,14 +1688,26 @@ namespace PlateformWithoutMoov
 
                                 collisionCoinsplayer2(a, b);
 
-
+                                
 
 
                                 buffer = Encoding.ASCII.GetBytes("ok player" + i);
 
                                 listen.Send(buffer);
+
+
+                              
+
+
                             }
-                            }
+                        
+                        
+                        
+                        }
+                  
+                    
+                    
+                    
                     }
                 }catch(SocketException eraz)
                 {
