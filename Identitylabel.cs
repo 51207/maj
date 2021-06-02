@@ -56,7 +56,7 @@ namespace PlateformWithoutMoov
                 a = "[ player principal ]=  III";
                
             }
-            else if (playersID == 3)
+            else if (playersID ==3)
             {
                 a = "[ player principal ]=  IV";
               

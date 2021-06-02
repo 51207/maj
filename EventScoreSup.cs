@@ -28,7 +28,8 @@ namespace PlateformWithoutMoov
         //defini evenement basé sur le delegate 
 
 
-        // Scoresup ScoreSuperieur = Afficher;
+    
+    // Scoresup ScoreSuperieur = Afficher;
         public string  Affiche()
         {// comment publier l'évenement maintenant ? => il suffit juste d'appeler l'event ici
             if (ScoreSuperieur != null)
