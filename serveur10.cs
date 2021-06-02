@@ -252,19 +252,7 @@ namespace ConsoleServeurPG
 
             }
             catch (SocketException era) {
-                for (int j = 0; j < ReceptmsgLists.Count; j++)
-                {
-                    try
-                    {
-                        byte[] bufs1 = Encoding.ASCII.GetBytes("EXIT");
-                        clients[j].Send(bufs1);
-
-                        Console.WriteLine("message Restart envoyé");
-
-                    }catch(SocketException eaa) { }
-
-                    // Application.Exit();
-                }
+               
                 Application.Exit();
                 //**permet de fermer l'application precedente qui était ouverte  et laisser ouverte la nouvelle application     
                 //  Application.Exit();

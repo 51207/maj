@@ -8,11 +8,22 @@ using System.Threading.Tasks;
 namespace PlateformWithoutMoov
 {
     //Corsage du jeu
-    public class EventScore
+     class EventScore
     {
         private string a = "On va corser un peu plus le jeu";
         public string WinScore { get { return a; } }
-        
+
+        private EventScoreSup30 EventScoreSup30;
+        public EventScore(EventScoreSup30 eventScoreSup30)
+        {
+            this.EventScoreSup30 = eventScoreSup30;
+            eventScoreSup30.ScoreSuperieur += WinScoreSup;
+        }
+        public   string WinScoreSup()
+        {
+            return a;
+        }
+
     }
 
 
@@ -56,7 +67,6 @@ namespace PlateformWithoutMoov
                
             }
             return a;
-            //rajouter
         }
 
     }

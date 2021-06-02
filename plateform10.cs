@@ -117,7 +117,9 @@ namespace PlateformWithoutMoov
             label_II.Visible = false;
 
 
-          
+            labelScoresup30.Visible = false;
+
+
         }
 
 
@@ -129,8 +131,9 @@ namespace PlateformWithoutMoov
         Socket listen;
 
         //***corser le jeu***
-        EventScore eventScore = new EventScore();
-
+        //EventScore eventScore = new EventScore();
+     
+      
 
 
 
@@ -187,7 +190,7 @@ namespace PlateformWithoutMoov
         //   private int Score { get; set; }
 
         Coin door = new Coin();
-        public event EventHandler<EventScore> Win;
+       // public event EventHandler<EventScore> Win;
 
 
 
@@ -232,10 +235,10 @@ namespace PlateformWithoutMoov
             //  listScoreplayers.Add(0);
             // listScoreplayers.Add(0);
 
-
+           
         }
 
-
+       
 
         //***** game over *****
 
@@ -660,7 +663,7 @@ namespace PlateformWithoutMoov
 
 
 
-
+       
 
 
 
@@ -831,12 +834,18 @@ namespace PlateformWithoutMoov
                             if (listdesplayers0[playersID % Nbresdejoueurs].Bounds.IntersectsWith(item.Bounds) && (Score >= 30))
 
                             {
+                                labelScoresup30.Visible = true;
 
+                                //Event cree pour afficher le message 
 
+                                EventScoreSup30 EventScoreSup30 = new EventScoreSup30();
 
-                                labelScoresup30.Text = eventScore.WinScore;
-                            
-                            
+                                EventScore eventScores = new EventScore(EventScoreSup30);
+                                EventScoreSup30.Affiche();
+                                ;
+                                //  labelScoresup30.Text = eventScore.WinScore;
+
+                                labelScoresup30.Text = EventScoreSup30.Affiche();
                             }
 
                         }
@@ -888,7 +897,7 @@ namespace PlateformWithoutMoov
                                 else { label_IV.Text = " "; }
 
                                 label_I.Text = "I : " + Scores.ToString() + " " + "Points";
-                                label_II.Text = "II : " + Score2.ToString() + " " + "Points";
+                                
 
 
                                 if (MessageBox.Show("Score final : " + Environment.NewLine + label_I.Text + Environment.NewLine + label_II.Text + Environment.NewLine + label_III.Text + Environment.NewLine + label_IV.Text, "FINISH", MessageBoxButtons.OK, MessageBoxIcon.Warning) == DialogResult.OK)
@@ -1081,8 +1090,19 @@ namespace PlateformWithoutMoov
 
 
 
-                                    labelScoresup30.Text = eventScore.WinScore;
-                                   
+                                  
+                                    labelScoresup30.Visible = true;
+
+                                    //Event cree pour afficher le message 
+
+                                    EventScoreSup30 EventScoreSup30 = new EventScoreSup30();
+
+                                    EventScore eventScores = new EventScore(EventScoreSup30);
+                                    EventScoreSup30.Affiche();
+                                    ;
+                                 
+
+                                    labelScoresup30.Text = EventScoreSup30.Affiche();
 
 
                                 }
@@ -1763,7 +1783,7 @@ namespace PlateformWithoutMoov
             Form2 form2 = new Form2();
 
             form2.Show();
-//rajouter
+
 
         }
 
