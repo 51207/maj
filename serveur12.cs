@@ -190,7 +190,6 @@ namespace ConsoleServeurPG
 
                             }
                         }
-
                            Environment.Exit(1);
                         }
 

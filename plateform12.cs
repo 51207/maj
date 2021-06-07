@@ -1779,6 +1779,7 @@ namespace PlateformWithoutMoov
 
         private void cdToolStripMenuItem_Click(object sender, EventArgs e)
         {
+           
             Application.Exit();
 
         }
