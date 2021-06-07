@@ -1,3 +1,4 @@
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -141,9 +142,9 @@ namespace ConsoleServeurPG
                 // SendmsgLists.Add(jaar);
             }
 
-
-            try
-            {
+            Console.WriteLine("Initialisation de toutes les listes et tableaux");
+            //try
+           // {
 
                 while (true)
                 {// on boucle à l'infini  pour la reception des données
@@ -163,11 +164,37 @@ namespace ConsoleServeurPG
                         string msg = Encoding.ASCII.GetString(buffersrecept, 0, bytecodes);
                         ReceptmsgLists[i] = msg;
 
-                      
-                       
+
+                    if (msg == "GAMEOVER")
+                    {
+                        Console.WriteLine("Game Over messages");
+
+                        for (int j = 0; j < ReceptmsgLists.Count; j++)
+                        {
+                            if (i != j) { 
+                            
+                            
+
+                                byte[] bufs1 = Encoding.ASCII.GetBytes(msg);
+                                clients[j].Send(bufs1);
+                                Console.WriteLine("message envoyé au client:" + " " + j + 1 + " ");
+
+                                byte[] buf2 = new byte[1024];
+
+                                int bytecode = clients[j].Receive(buf2);
+
+                                string msg1 = Encoding.ASCII.GetString(buf2, 0, bytecode);
 
 
+                                Console.WriteLine("Accusé de reception :" + " " + j + 1 + " " + msg1);
 
+                            }
+                        }
+
+                           Environment.Exit(1);
+                        }
+
+                   
 
                         /*
                          *      la boucle for remplace ce texte qui  permet de recevoir les données envoyées par les deux clients.
@@ -189,7 +216,8 @@ namespace ConsoleServeurPG
 
 
                     for (int j = 0; j < SendmsgLists.Count; j++)
-                    { //mettre dans une liste les differents buffer qu'on veut envoyé
+                    {
+                    //mettre dans une liste les differents buffer qu'on veut envoyé
 
                         SendmsgLists[j] = Encoding.ASCII.GetBytes(ReceptmsgLists[j]);
 
@@ -248,15 +276,6 @@ namespace ConsoleServeurPG
 
 
 
-                }
-
-            }
-            catch (SocketException era) {
-               
-                Application.Exit();
-                //**permet de fermer l'application precedente qui était ouverte  et laisser ouverte la nouvelle application     
-                //  Application.Exit();
-                Environment.Exit(1);
 
             }
 
