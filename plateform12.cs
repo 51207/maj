@@ -363,17 +363,16 @@ namespace PlateformWithoutMoov
                     {
 
                         //***** on envoie l'information au serveur qu'on arrête de jouer*****
-                        //byte[] buffer = Encoding.ASCII.GetBytes("GAMEOVER");
-                         // listen.Send(buffer);
+                        byte[] buffer = Encoding.ASCII.GetBytes("GAMEOVER");
+                          listen.Send(buffer);
 
-                        //  Application.Exit();
-                        //    Environment.Exit(1);
-
+                      
 
 
 
-                        // byte[] buffer = Encoding.ASCII.GetBytes("EXIT");
-                        //   listen.Send(buffer);
+
+                       //    byte[] buffers = Encoding.ASCII.GetBytes("ok");
+                     //     listen.Send(buffers);
                         
 
                         Application.Exit();
@@ -425,8 +424,12 @@ namespace PlateformWithoutMoov
                     if (MessageBox.Show("Score final : " + Environment.NewLine + label_I.Text + Environment.NewLine + label_II.Text + Environment.NewLine + label_III.Text + Environment.NewLine + label_IV.Text, "Game Over", MessageBoxButtons.OK, MessageBoxIcon.Warning) == DialogResult.OK)
                     {
                         //***** on envoie l'information au serveur qu'on arrête de jouer*****
-                      //  byte[] buffer = Encoding.ASCII.GetBytes("RESTART");
-                    //    listen.Send(buffer);
+                        //  byte[] buffer = Encoding.ASCII.GetBytes("RESTART");
+                        //    listen.Send(buffer);
+
+                        //***** on envoie l'information au serveur qu'on arrête de jouer*****
+                        byte[] buffer = Encoding.ASCII.GetBytes("GAMEOVER");
+                        listen.Send(buffer);
 
                         Application.Exit();
                         Environment.Exit(1);
@@ -1551,14 +1554,14 @@ namespace PlateformWithoutMoov
                 //listen.RemoteEndPoint.ToString()
 
 
-
-
+                //si on veut envoyer le msg de gameover il faut qu'il soit avant le listen.Send(buffer) parceque c'est le seul qui envoie des message au serveur
+                GameOver(); 
 
                 // **** on envoie le buffer ****
 
                 listen.Send(buffer);
 
-                GameOver();
+                //GameOver();
 
 
 
@@ -1567,8 +1570,8 @@ namespace PlateformWithoutMoov
                 // **** buffer receptions du buffer *****
 
 
-                try
-                {
+                //try
+               //{
 
                     for (int i = 0; i < listdesplayers0.Count; i++)
                     {
@@ -1593,10 +1596,11 @@ namespace PlateformWithoutMoov
 
 
 
-                            if (msg == "RESTART" || msg == "EXIT")
+                            if (msg == "GAMEOVER")
                             {
-                                byte[] bfs12 = Encoding.ASCII.GetBytes("OK");
+                               byte[] bfs12 = Encoding.ASCII.GetBytes("OK");
                                 listen.Send(bfs12);
+
 
 
                                 Application.Exit();
@@ -1604,6 +1608,7 @@ namespace PlateformWithoutMoov
 
 
                             }
+
                             else
                             {
 
@@ -1729,11 +1734,11 @@ namespace PlateformWithoutMoov
                     
                     
                     }
-                }catch(SocketException eraz)
+              /*  }catch(SocketException eraz)
                 {
                     Application.Exit();
                     Environment.Exit(1);
-                }
+                }*/
 
 
 
