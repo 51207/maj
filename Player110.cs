@@ -28,61 +28,6 @@ namespace PlateformWithoutMoov
 
 
 
-
-        public void intersect_Right_Left()
-        {
-            if (this.Left < 0) { this.Left = 0; }
-            if (this.Right > this.Parent.ClientSize.Width)
-            {
-                this.Left = this.Parent.ClientSize.Width - this.Width;
-            }
-        }
-        public string intersect_Right_Left1()
-        {
-            string i = "0", k = "0";
-           
-            if (this.Left < 0) { this.Left = 0; return i = "1"; }
-            if (this.Right > this.Parent.ClientSize.Width)
-            {
-                this.Left = this.Parent.ClientSize.Width - this.Width;
-                return k = "1";
-            }
-            return i + ":" + k;
-        }
-
-     
-
-
-
-        public void collisionPlatform()
-        {//attention si on veut utiliser cette methode dans form1 le "this.parent.control " devient Player1.parent.controls"
-            foreach (Control item in this.Parent.Controls)
-            {
-               
-                
-                if (item is Control)
-                    {
-
-                        if ((string)item.Tag == "PlateForm")
-                            {
-
-                                if (this.Bounds.IntersectsWith(item.Bounds))
-                                    {
-                                         this.G = 8;
-                                            
-                                        this.Top = item.Top - this.Height;
-                                             // Jump = false;
-                                     }
-                                    
-                                        item.BringToFront();
-                            }
-            
-                    }
-            
-            }
-        }
-      
-        
         
         
         public string collisionPlatform1()

@@ -19,7 +19,7 @@ namespace PlateformWithoutMoov
             this.Image = Properties.Resources.plateform2;
             this.SizeMode = (PictureBoxSizeMode)SizeType.Absolute;
             this.Size = new Size(Lsize, Hsize);
-            this.BackColor = Color.FromArgb(128, 128, 255);
+            this.BackColor = Color.FromArgb(128, 128,255);
             this.Tag = TagName;
         }
     }
