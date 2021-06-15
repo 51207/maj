@@ -23,6 +23,8 @@ namespace PlateformWithoutMoov
             changeImage(r.Next(1, 5));
 
 
+
+
             this.SizeMode = (PictureBoxSizeMode)SizeType.Absolute;
             this.BackColor = Color.FromArgb(128, 128, 255);
             this.Tag = TagCoin;

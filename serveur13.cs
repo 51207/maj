@@ -693,7 +693,7 @@ namespace ConsoleServeurPG
                     {
                         for (int j = 0; j < SendmsgLists.Count; j++)
                         {
-                            if (i != j)
+                            if (i !=j)
                             {
 
 

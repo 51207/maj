@@ -13,7 +13,9 @@ namespace PlateformWithoutMoov
         public PanelGame()
         {
             this.BackColor = Color.FromArgb(128, 128, 255);
-            this.Dock = DockStyle.Bottom;
+           
+           
+        this.Dock = DockStyle.Bottom;
         }
     }
 }

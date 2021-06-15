@@ -19,6 +19,8 @@ namespace PlateformWithoutMoov
 
 
 
+
+
         //etape1:
         //Scoresup est le nom que j'ai donnée au delegué
         // ce delegate est aussi le publisher

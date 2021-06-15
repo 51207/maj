@@ -13,7 +13,7 @@ namespace PlateformWithoutMoov
         public string TagName { get; set; } = "PlateForm";
         public Random r = new Random();
         private int Lsize { get { return r.Next(180, 185); } }
-        private int Hsize { get { return r.Next(27, 36); } }
+        private int Hsize { get { return r.Next(27,36); } }
         public PlateForm()
         {
             this.Image = Properties.Resources.plateform2;

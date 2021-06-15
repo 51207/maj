@@ -97,6 +97,10 @@ namespace PlateformWithoutMoov
 
 
 
+
+
+
+
         //*** initialisation de la visibité à false des player3 player
 
 
@@ -130,8 +134,7 @@ namespace PlateformWithoutMoov
         //***** socket ******
         Socket listen;
 
-        //***corser le jeu***
-        //EventScore eventScore = new EventScore();
+       
      
       
 
@@ -143,7 +146,7 @@ namespace PlateformWithoutMoov
         {
             try
             {
-                IPAddress ip = IPAddress.Parse("192.168.1.5");
+                IPAddress ip = IPAddress.Parse("127.0.0.1");
                 int port = 8001;
                 IPEndPoint local = new IPEndPoint(ip, port);
                 listen = new Socket(SocketType.Stream, ProtocolType.Tcp);
@@ -177,9 +180,6 @@ namespace PlateformWithoutMoov
                 Nbresdejoueurs = int.Parse(ID[2]);
 
 
-                //   int Nbresde = int.Parse(ID[2]);
-                // bufid = Encoding.ASCII.GetBytes(Nbresdejoueurs.ToString());
-                //  listen.Send(bufid);
 
             }
 
@@ -187,10 +187,10 @@ namespace PlateformWithoutMoov
 
         }
 
-        //   private int Score { get; set; }
+      
 
         Coin door = new Coin();
-       // public event EventHandler<EventScore> Win;
+     
 
 
 
@@ -231,11 +231,13 @@ namespace PlateformWithoutMoov
             for (int i = 0; i < listdesplayers0.Count; i++)
             {
                 listScoreplayers.Add(0);
-            }
-            //  listScoreplayers.Add(0);
-            // listScoreplayers.Add(0);
 
-           
+
+               
+            }
+
+
+
         }
 
        
@@ -250,47 +252,11 @@ namespace PlateformWithoutMoov
             {
                 if (listdesplayers0[i].Top + listdesplayers0[i].Height > this.ClientSize.Height)
                 {
-
-                    //if (listdesplayers0[playersID].Top + listdesplayers0[playersID].Height > this.ClientSize.Height && )
-
-
-                    // important: la gravité est 8 
+                    
+                     
                     int Score = listScoreplayers[0];
-                    // int Score2 = listScoreplayers[1];
-                    int Score2 = 0;
-                    int Score3 = 0;
-                    int Score4 = 0;
-                    if (player2.Visible == true)
-                    {
-                        Score2 = listScoreplayers[1];
-                        label_II.Text = "II : " + Score2.ToString() + " " + "Points";
-
-                    }
-                    else { label_II.Text = " "; }
-
-
-                    if (player3.Visible == true)
-                    {
-                        Score3 = listScoreplayers[2];
-                        label_III.Text = "III : " + Score3.ToString() + " " + "Points";
-
-                    }
-                    else { label_III.Text = " "; }
-
-                    if (player4.Visible == true)
-                    {
-                        Score4 = listScoreplayers[3];
-                        label_IV.Text = "IV :" + Score4.ToString() + " " + "Points";
-
-                    }
-                    else { label_IV.Text = " "; }
-
+                   
                     label_I.Text = "I : " + Score.ToString() + " " + "Points";
-
-
-                    //label_II.Text = "II : " + Score2.ToString() + " " + "Points";
-                    //  label_III.Text = "III : " + Score3.ToString();
-                    //    label_IV.Text = "IV :" + Score4.ToString();
 
                     timer.Stop();
 
@@ -309,7 +275,6 @@ namespace PlateformWithoutMoov
                     {
 
 
-
                         Application.Exit();
                         Environment.Exit(1);
                     }
@@ -324,42 +289,21 @@ namespace PlateformWithoutMoov
 
             if (Nbresdejoueurs == 2)
             {
-                if (listdesplayers0[i].Top + listdesplayers0[i].Height > this.ClientSize.Height && listdesplayers0[i + 1].Top + listdesplayers0[i + 1].Height > this.ClientSize.Height)
+                if (listdesplayers0[i].Top + listdesplayers0[i].Height > this.ClientSize.Height     &&     listdesplayers0[i + 1].Top + listdesplayers0[i + 1].Height > this.ClientSize.Height)
                 {
 
-                    //if (listdesplayers0[playersID].Top + listdesplayers0[playersID].Height > this.ClientSize.Height && )
-
-
-                    // important: la gravité est 8 
+                   
                     int Score = listScoreplayers[0];
                     int Score2 = listScoreplayers[1];
-                    int Score3 = 0;
-                    int Score4 = 0;
-                    if (player3.Visible == true)
-                    {
-                        Score3 = listScoreplayers[2];
-                        label_III.Text = "III : " + Score3.ToString() + " " + "Points";
-
-                    }
-                    else { label_III.Text = " "; }
-
-                    if (player4.Visible == true)
-                    {
-                        Score4 = listScoreplayers[3];
-                        label_IV.Text = "IV :" + Score4.ToString() + " " + "Points";
-
-                    }
-                    else { label_IV.Text = " "; }
-
+                 
                     label_I.Text = "I : " + Score.ToString() + " " + "Points";
                     label_II.Text = "II : " + Score2.ToString() + " " + "Points";
-                    //  label_III.Text = "III : " + Score3.ToString();
-                    //    label_IV.Text = "IV :" + Score4.ToString();
+                  
 
                     timer.Stop();
 
 
-                    if (MessageBox.Show("Score final : " + Environment.NewLine + label_I.Text + Environment.NewLine + label_II.Text + Environment.NewLine + label_III.Text + Environment.NewLine + label_IV.Text, "Game Over", MessageBoxButtons.OK, MessageBoxIcon.Warning) == DialogResult.OK)
+                    if (MessageBox.Show("Score final : " + Environment.NewLine + label_I.Text + Environment.NewLine + label_II.Text , "Game Over", MessageBoxButtons.OK, MessageBoxIcon.Warning) == DialogResult.OK)
                     {
 
                         //***** on envoie l'information au serveur qu'on arrête de jouer*****
@@ -371,8 +315,7 @@ namespace PlateformWithoutMoov
 
 
 
-                       //    byte[] buffers = Encoding.ASCII.GetBytes("ok");
-                     //     listen.Send(buffers);
+                
                         
 
                         Application.Exit();
@@ -405,27 +348,18 @@ namespace PlateformWithoutMoov
                     }
                     else { label_III.Text = " "; }
 
-                    if (player4.Visible == true)
-                    {
-                        Score4 = listScoreplayers[3];
-                        label_IV.Text = "IV :" + Score4.ToString() + " " + "Points";
-
-                    }
-                    else { label_IV.Text = " "; }
+                   
 
                     label_I.Text = "I : " + Score.ToString() + " " + "Points";
                     label_II.Text = "II : " + Score2.ToString() + " " + "Points";
-                    //  label_III.Text = "III : " + Score3.ToString();
-                    //    label_IV.Text = "IV :" + Score4.ToString();
+                   
 
                     timer.Stop();
 
 
-                    if (MessageBox.Show("Score final : " + Environment.NewLine + label_I.Text + Environment.NewLine + label_II.Text + Environment.NewLine + label_III.Text + Environment.NewLine + label_IV.Text, "Game Over", MessageBoxButtons.OK, MessageBoxIcon.Warning) == DialogResult.OK)
+                    if (MessageBox.Show("Score final : " + Environment.NewLine + label_I.Text + Environment.NewLine + label_II.Text + Environment.NewLine + label_III.Text , "Game Over", MessageBoxButtons.OK, MessageBoxIcon.Warning) == DialogResult.OK)
                     {
-                        //***** on envoie l'information au serveur qu'on arrête de jouer*****
-                        //  byte[] buffer = Encoding.ASCII.GetBytes("RESTART");
-                        //    listen.Send(buffer);
+                        
 
                         //***** on envoie l'information au serveur qu'on arrête de jouer*****
                         byte[] buffer = Encoding.ASCII.GetBytes("GAMEOVER");
@@ -433,15 +367,7 @@ namespace PlateformWithoutMoov
 
                         Application.Exit();
                         Environment.Exit(1);
-                    //}
-
-
-                    //else
-                    //{
-                      /*  byte[] buffer = Encoding.ASCII.GetBytes("EXIT");
-                        //listen.Send(buffer);
-                        //Application.Exit();
-                        //Environment.Exit(1);*/
+                   
                     }
 
                 }
@@ -457,7 +383,7 @@ namespace PlateformWithoutMoov
                     //if (listdesplayers0[playersID].Top + listdesplayers0[playersID].Height > this.ClientSize.Height && )
 
 
-                    // important: la gravité est 8 
+                    
                     int Score = listScoreplayers[0];
                     int Score2 = listScoreplayers[1];
                     int Score3 = 0;
@@ -480,17 +406,18 @@ namespace PlateformWithoutMoov
 
                     label_I.Text = "I : " + Score.ToString() + " " + "Points";
                     label_II.Text = "II : " + Score2.ToString() + " " + "Points";
-                    //  label_III.Text = "III : " + Score3.ToString();
-                    //    label_IV.Text = "IV :" + Score4.ToString();
+                    
 
                     timer.Stop();
 
 
                     if (MessageBox.Show("Score final : " + Environment.NewLine + label_I.Text + Environment.NewLine + label_II.Text + Environment.NewLine + label_III.Text + Environment.NewLine + label_IV.Text, "Game Over", MessageBoxButtons.OK, MessageBoxIcon.Warning) == DialogResult.OK)
                     {
+                       
+
                         //***** on envoie l'information au serveur qu'on arrête de jouer*****
-                      //  byte[] buffer = Encoding.ASCII.GetBytes("RESTART");
-                        //listen.Send(buffer);
+                        byte[] buffer = Encoding.ASCII.GetBytes("GAMEOVER");
+                        listen.Send(buffer);
 
                         Application.Exit();
                         Environment.Exit(1);
@@ -498,11 +425,7 @@ namespace PlateformWithoutMoov
 
 
                    
-                      /*  byte[] buffer = Encoding.ASCII.GetBytes("EXIT");
-                        listen.Send(buffer);
-                        Application.Exit();
-                        Environment.Exit(1);
-*/                    
+                     
 
                 }
             }
@@ -513,10 +436,9 @@ namespace PlateformWithoutMoov
                 if (listdesplayers0[i].Top + listdesplayers0[i].Height > this.ClientSize.Height && listdesplayers0[i + 1].Top + listdesplayers0[i + 1].Height > this.ClientSize.Height && listdesplayers0[i + 2].Top + listdesplayers0[i + 2].Height > this.ClientSize.Height && listdesplayers0[i + 3].Top + listdesplayers0[i + 3].Height > this.ClientSize.Height && listdesplayers0[i + 4].Top + listdesplayers0[i + 4].Height > this.ClientSize.Height)
                 {
 
-                    //if (listdesplayers0[playersID].Top + listdesplayers0[playersID].Height > this.ClientSize.Height && )
+                   
 
-
-                    // important: la gravité est 8 
+                   
                     int Score = listScoreplayers[0];
                     int Score2 = listScoreplayers[1];
                     int Score3 = 0;
@@ -547,8 +469,7 @@ namespace PlateformWithoutMoov
 
                     label_I.Text = "I : " + Score.ToString() + " " + "Points";
                     label_II.Text = "II : " + Score2.ToString() + " " + "Points";
-                    //  label_III.Text = "III : " + Score3.ToString();
-                    //    label_IV.Text = "IV :" + Score4.ToString();
+                   
 
                     timer.Stop();
 
@@ -556,14 +477,8 @@ namespace PlateformWithoutMoov
                     if (MessageBox.Show("Score final : " + Environment.NewLine + label_I.Text + Environment.NewLine + label_II.Text + Environment.NewLine + label_III.Text + Environment.NewLine + label_IV.Text + Environment.NewLine + label_V.Text, "Game Over", MessageBoxButtons.OK, MessageBoxIcon.Warning) == DialogResult.OK)
                     {
                         //***** on envoie l'information au serveur qu'on arrête de jouer*****
-                        /*    byte[] buffer = Encoding.ASCII.GetBytes("RESTART");
-                            listen.Send(buffer);
-
-                            Application.Exit();
-                            Environment.Exit(1);
-    */
-
-                   //     timerlabel1.starttimer();
+                        byte[] buffer = Encoding.ASCII.GetBytes("GAMEOVER");
+                        listen.Send(buffer);
 
                         Application.Exit();
                         Environment.Exit(1);
@@ -585,64 +500,7 @@ namespace PlateformWithoutMoov
 
 
 
-     /*   //****** Restart ******
-        private void Restart()
-        {
-            listdesplayers0[playersID].Jump = false;
-
-            listdesplayers0[playersID].left = false;
-
-            listdesplayers0[playersID].right = false;
-
-            int Score = 0;
-
-            label_I.Text = "Score : " + Score.ToString();
-
-
-            // renitialisation des scores de tous les players dans listdesplayers
-
-            for (int i = 0; i < listdesplayers0.Count; i++)
-            {
-                listScoreplayers[i] = 0;
-            }
-
-
-
-
-
-            foreach (Control x in this.Controls)
-            {
-
-                if (x is PictureBox && x.Visible == false)
-                {
-                    x.Visible = true;
-
-                }
-
-                coin11.Location = new Point(97, 250);
-
-                coin8.Location = new Point(25, 135);
-
-                coin14.Location = new Point(221, 135);
-
-                coin1.Location = new Point(353, 50);
-
-                coin2.Location = new Point(519, 112);
-
-
-                coin13.Location = new Point(718, 112);
-
-                coin7.Location = new Point(609, 250);
-
-                coin15.Location = new Point(403, 323);
-
-                player1.Location = new Point(200, 0);
-
-                timer.Start();
-
-            }
-
-        }*/
+    
 
 
 
@@ -662,8 +520,8 @@ namespace PlateformWithoutMoov
 
         //****** Random permettant la génération  des coins ******
 
-        public Random r = new Random(0);
-
+        public Random r = new Random(0); 
+        // *** le seed 0 donne une sequence de valeur qui sera la même dans les deux methodes de collisions
 
 
        
@@ -677,13 +535,7 @@ namespace PlateformWithoutMoov
         {
             string s = "100"; string q = "100"; int a = 0; int b = 0;
 
-            //  Random r = new Random(0);
-
-
-            // List<Player> listplayers = new List<Player>();
-
-
-            // listplayers.Add(player1);
+          
 
 
 
@@ -692,9 +544,9 @@ namespace PlateformWithoutMoov
 
             int Score = listScoreplayers.ElementAt(playersID);
 
-            // .Parent.Controls : on a accès à tous les controls et là on peut faire une condition pour savoir si c'est le coin qu'on est entrain de parler
+          
             foreach (Control item in listdesplayers0[playersID].Parent.Controls)
-            { //Control item in player1.Parent.controls
+            { 
 
 
                 if (item is Coin)
@@ -704,10 +556,32 @@ namespace PlateformWithoutMoov
 
                     if ((string)item.Tag == "Coin")
                     {
+                        if(Score >= 30)
+                        {
+                            labelScoresup30.Visible = true;
 
+                            //Event cree pour afficher le message 
+
+                            EventScoreSup30 EventScoreSup30 = new EventScoreSup30();
+
+
+                            //pour appeler cette methode dans ici (car on est maintenant abonné ) , il suffit d'instancier la classe du client et aussi la classe de l'abonné
+
+                            EventScore eventScores = new EventScore(EventScoreSup30);
+                            EventScoreSup30.Affiche();
+
+                            //  labelScoresup30.Text = eventScore.WinScore;
+
+                            labelScoresup30.Text = EventScoreSup30.Affiche();
+                        }else
+                        {
+                            labelScoresup30.Visible = false;
+                        }
 
                         if (Score < 40)
                         {
+                            //la porte 
+
                             coin3.Visible = false;
                         }
                         else
@@ -760,31 +634,36 @@ namespace PlateformWithoutMoov
 
                             if (item.AccessibleName == "coin-1")
                             {
-
+                                
 
                                 if (Score < 30)
                                 {
-                                    //  Score -= 1;
 
 
-                                    //element i de la liste : on retire 1 point au joueur i
 
-                                    //  listScoreplayers[0] -= 1; = players1[0] -= 1;
+                                    //*****element i de la liste : on retire 1 point au joueur i
 
-                                    listScoreplayers[(playersID) % Nbresdejoueurs] -= 1;
+                                    //  listScoreplayers[0] -= 1; = players1[0] -= 1;            c'est comme si   //  Score -= 1;
+
+                                    listScoreplayers[(playersID) ] -= 1;
+                                   // labelScoresup30.Visible = false;
 
                                 }
 
-                                else if (Score > 30)
+                                else if (Score >= 30)
 
                                 {
 
-                                    //Score -= 4; 
 
 
-                                    // listScoreplayers[0] -= 4;
+                                
 
-                                    listScoreplayers[(playersID) % Nbresdejoueurs] -= 4;
+                                    listScoreplayers[(playersID) ] -= 4;
+
+
+
+
+                                    
                                 }
 
                             }
@@ -796,12 +675,9 @@ namespace PlateformWithoutMoov
 
                             if (item.AccessibleName == "coin+1")
                             {
-                                //Score += 1;
-                                // listScoreplayers[0] += 1;
+                               
 
-                                listScoreplayers[(playersID) % Nbresdejoueurs] += 1;
-
-
+                                listScoreplayers[(playersID) ] += 1;
                             }
 
 
@@ -812,21 +688,16 @@ namespace PlateformWithoutMoov
 
                             if (item.AccessibleName == "coin+2")
                             {
-                                //    Score += 2;
-                                //  listScoreplayers[0] += 2;
-                                listScoreplayers[(playersID) % Nbresdejoueurs] += 2;
-
+                               
+                                listScoreplayers[(playersID)] += 2;
                             }
 
 
 
                             if (item.AccessibleName == "coin+3")
                             {
-                                //    Score += 3; 
-                                //   listScoreplayers[0] += 3;
-
-                                listScoreplayers[(playersID) % Nbresdejoueurs] += 3;
-
+                               
+                                listScoreplayers[(playersID)] += 3;
                             }
 
 
@@ -834,26 +705,11 @@ namespace PlateformWithoutMoov
 
                             label_I.Text = "I:" + Score.ToString(); ;
 
-                            if (listdesplayers0[playersID % Nbresdejoueurs].Bounds.IntersectsWith(item.Bounds) && (Score >= 30))
-
-                            {
-                                labelScoresup30.Visible = true;
-
-                                //Event cree pour afficher le message 
-
-                                EventScoreSup30 EventScoreSup30 = new EventScoreSup30();
-
-                                EventScore eventScores = new EventScore(EventScoreSup30);
-                                EventScoreSup30.Affiche();
-                                ;
-                                //  labelScoresup30.Text = eventScore.WinScore;
-
-                                labelScoresup30.Text = EventScoreSup30.Affiche();
-                            }
+                       
 
                         }
 
-                        //   item.BringToFront();
+                     
 
 
 
@@ -869,7 +725,7 @@ namespace PlateformWithoutMoov
 
 
                                 int Scores = listScoreplayers[0];
-                                //int Score2 = listScoreplayers[1];
+                              
                                 int Score2 = 0;
                                 int Score3 = 0;
                                 int Score4 = 0;
@@ -910,11 +766,11 @@ namespace PlateformWithoutMoov
                                     Application.Exit();
                                     Environment.Exit(1);
 
-                                    //  item.BringToFront();
+                               
                                 }
                             }
                             
-                            // item.BringToFront();
+                        
 
                         }
 
@@ -940,8 +796,9 @@ namespace PlateformWithoutMoov
 
         //****collisions des autres players execepté le prayer1    
 
-        public void collisionCoinsplayer2(int a, int b)
+        public void collisionCoinsplayer2()
         {
+            int a = 0; int b = 0;
 
 
             //foreach (Player item1 in listplayers)
@@ -951,7 +808,7 @@ namespace PlateformWithoutMoov
                 {
                     continue;
 
-                    //continue c'est l'inverse du break ,  si cette condition est vrai , on retourne directement dans la boucle for sans lire le reste
+               
                 }
                 // cette condition =  if( i != playerID{ executer tous le reste du code}
 
@@ -980,8 +837,7 @@ namespace PlateformWithoutMoov
 
                 foreach (Control item in item1.Parent.Controls)
                 {
-                    //  Random r = new Random(0);
-                    //0 est un seed
+                    
 
                     if (item is Coin)
                     {
@@ -990,6 +846,29 @@ namespace PlateformWithoutMoov
 
                         if ((string)item.Tag == "Coin")
                         {
+
+                            if (Score >= 30)
+                            {
+                                labelScoresup30.Visible = true;
+
+                                //Event cree pour afficher le message 
+
+                                EventScoreSup30 EventScoreSup30 = new EventScoreSup30();
+
+
+                                //pour appeler cette methode dans ici (car on est maintenant abonné ) , il suffit d'instancier la classe du client et aussi la classe de l'abonné
+
+                                EventScore eventScores = new EventScore(EventScoreSup30);
+                                EventScoreSup30.Affiche();
+
+                             
+
+                                labelScoresup30.Text = EventScoreSup30.Affiche();
+                            }
+                            else
+                            {
+                                labelScoresup30.Visible = false;
+                            }
 
 
                             if (Score < 40)
@@ -1048,12 +927,16 @@ namespace PlateformWithoutMoov
                                         listScoreplayers[i] -= 1;
 
                                     }
-                                    else if (Score > 30)
+                                    else if (Score >= 30)
 
                                     {
 
                                         //Score -= 4; 
                                         listScoreplayers[i] -= 4;
+
+
+
+                                        
                                     }
 
                                 }
@@ -1088,27 +971,7 @@ namespace PlateformWithoutMoov
 
                                 label_II.Text = "score :" + Score.ToString(); ;
 
-                                if (item1.Bounds.IntersectsWith(item.Bounds) && (Score >= 30))
-                                {
-
-
-
-                                  
-                                    labelScoresup30.Visible = true;
-
-                                    //Event cree pour afficher le message 
-
-                                    EventScoreSup30 EventScoreSup30 = new EventScoreSup30();
-
-                                    EventScore eventScores = new EventScore(EventScoreSup30);
-                                    EventScoreSup30.Affiche();
-                                    ;
-                                 
-
-                                    labelScoresup30.Text = EventScoreSup30.Affiche();
-
-
-                                }
+                            
 
                             }
 
@@ -1128,6 +991,8 @@ namespace PlateformWithoutMoov
 
                                     int Scores = listScoreplayers[0];
                                     //int Score2 = listScoreplayers[1];
+                                  
+                                    
                                     int Score2 = 0;
                                     int Score3 = 0;
                                     int Score4 = 0;
@@ -1158,19 +1023,19 @@ namespace PlateformWithoutMoov
 
                                     label_I.Text = "I : " + Scores.ToString() + " " + "Points";
                                     label_II.Text = "II : " + Score2.ToString() + " " + "Points";
+                                    label_III.Text = "III : " + Score3.ToString() + " " + "Points";
+                                    label_IV.Text = "IV :" + Score4.ToString() + " " + "Points";
 
 
                                     if (MessageBox.Show("Score final : " + Environment.NewLine + label_I.Text + Environment.NewLine + label_II.Text + Environment.NewLine + label_III.Text + Environment.NewLine + label_IV.Text, "FINISH", MessageBoxButtons.OK, MessageBoxIcon.Warning) == DialogResult.OK)
                                     {
-                                        //Application.Restart();
-                                        //Restart();
-                                       // timerlabel1.starttimer();
+                                       
                                         Application.Exit();
                                         Environment.Exit(1);
                                     }
 
 
-                                    //     item.BringToFront();
+                                   
 
                                 }
 
@@ -1283,7 +1148,7 @@ namespace PlateformWithoutMoov
             // Player otherplayer = listdesplayers0.ElementAt(i);
 
 
-            //cette condition permet de dire que si i==playerID ça concerne le players principal et donc on coonait deja ces mouvemment 
+            //cette condition permet de dire que si i==playerID ça concerne le players principal et donc on connait deja ces mouvemments 
             //ça concerne donc les autres joueurs comme le player2 ou player3 player4 etc...
             //playerID correspond au premier player qui se connecte.
 
@@ -1294,16 +1159,16 @@ namespace PlateformWithoutMoov
 
             if (goleft == true)
             {
-                // listdesplayers0[(playersID + 1) % Nbresdejoueurs].left = true;
+              
                 listdesplayers0[(i)].left = true;
-                //  otherplayer.left = true;
+            
             }
 
             else
             {
-                // listdesplayers0[(playersID + 1) % Nbresdejoueurs].left = false;
+              
                 listdesplayers0[(i)].left = false;
-                //  otherplayer.left = false;
+              
             }
 
 
@@ -1311,18 +1176,17 @@ namespace PlateformWithoutMoov
 
             if (goright == true)
             {
-                //  listdesplayers0[(playersID + 1) % Nbresdejoueurs].right = true;
+             
                 listdesplayers0[(i)].right = true;
 
-                // otherplayer.right = true;
             }
 
             else
             {
 
-                //  listdesplayers0[(playersID + 1) % Nbresdejoueurs].right = false;
+                
                 listdesplayers0[(i)].right = false;
-                //otherplayer.right = false;
+            
             }
 
 
@@ -1330,17 +1194,17 @@ namespace PlateformWithoutMoov
 
             if (goup == true)
             {
-                //   listdesplayers0[(playersID + 1) % Nbresdejoueurs].Jump = true;
+              
                 listdesplayers0[(i)].Jump = true;
-                //otherplayer.Jump = true;
+              
 
             }
             else
             {
 
-                //  listdesplayers0[(playersID + 1) % Nbresdejoueurs].Jump = false;
+              
                 listdesplayers0[(i)].Jump = false;
-                //otherplayer.Jump = false;
+              
 
             }
 
@@ -1439,7 +1303,7 @@ namespace PlateformWithoutMoov
 
 
                 //***** collision plateforme *****
-                //string plate = collisionPlatform2listplayers();//player1.collisionPlatform1();
+            
                 string plate = listdesplayers0[playersID].collisionPlatform1(); ;
 
 
@@ -1450,6 +1314,15 @@ namespace PlateformWithoutMoov
 
                 label_I.Text = Score.ToString();
 
+               
+                
+                
+                
+                
+                
+                
+                
+                
                 // *****  coin ******
 
                 //string coin =  collisionCoins1();
@@ -1458,6 +1331,36 @@ namespace PlateformWithoutMoov
 
             }
         }
+
+
+        public void score345()
+        {
+            //au lieu de faire ça je peux creer une liste ou il ya tous les labels, et ensuite les réutilisés 
+            if (Nbresdejoueurs == 3)
+            {
+                int Score3 = listScoreplayers[2];
+                label_III.Text = Score3.ToString();
+            }
+            if (Nbresdejoueurs == 4)
+            {
+                int Score3 = listScoreplayers[2];
+                label_III.Text = Score3.ToString();
+                int Score4 = listScoreplayers[3];
+                label_IV.Text = Score4.ToString();
+            }
+            if (Nbresdejoueurs == 5)
+            {
+                int Score3 = listScoreplayers[2];
+                label_III.Text = Score3.ToString();
+                int Score4 = listScoreplayers[3];
+                label_IV.Text = Score4.ToString();
+                int Score5 = listScoreplayers[4];
+                label_V.Text = Score5.ToString();
+            }
+
+           
+        }
+
 
 
 
@@ -1473,7 +1376,6 @@ namespace PlateformWithoutMoov
             Soloplayer();
 
 
-            //   bool goleft=false, goright=false, gojump=false; 
 
             //**** si on veut 2....à 5 joueurs
 
@@ -1506,7 +1408,7 @@ namespace PlateformWithoutMoov
 
 
                 //***** collision plateforme *****
-                //string plate = collisionPlatform2listplayers();//player1.collisionPlatform1();
+              
                 string plate = listdesplayers0[playersID].collisionPlatform1(); ;
 
 
@@ -1524,10 +1426,8 @@ namespace PlateformWithoutMoov
                 int Score2 = listScoreplayers[1];
                 label_II.Text = Score2.ToString();
 
-
-
-
-
+                //***** score player 3 4 5 *****
+                score345();
 
 
 
@@ -1549,13 +1449,20 @@ namespace PlateformWithoutMoov
 
 
 
-                //  byte[] buffer = Encoding.ASCII.GetBytes(movement + "/" + plate + "/" + valcoins + "/" + labelscore.Text);
-                byte[] buffer = Encoding.ASCII.GetBytes(movement + "/" + plate + "/" + valcoins );
-                //listen.RemoteEndPoint.ToString()
+                
+                //byte[] buffer = Encoding.ASCII.GetBytes(movement + "/" + plate + "/" + valcoins );
+                
+                byte[] buffer = Encoding.ASCII.GetBytes(movement + "/" + plate );
+             
+
 
 
                 //si on veut envoyer le msg de gameover il faut qu'il soit avant le listen.Send(buffer) parceque c'est le seul qui envoie des message au serveur
                 GameOver(); 
+
+
+
+
 
                 // **** on envoie le buffer ****
 
@@ -1570,8 +1477,8 @@ namespace PlateformWithoutMoov
                 // **** buffer receptions du buffer *****
 
 
-                //try
-               //{
+                try
+               {
 
                     for (int i = 0; i < listdesplayers0.Count; i++)
                     {
@@ -1628,12 +1535,10 @@ namespace PlateformWithoutMoov
 
 
 
-                                string coin1 = data[2];
 
 
                                
 
-                                //     string score1 = data[3];
 
 
                                 //*** deuxième split ***
@@ -1689,31 +1594,39 @@ namespace PlateformWithoutMoov
                                 }
 
 
-                                listdesplayers0[(i)].movement();
-                                /* for (int j = 0; j < listdesplayers0.Count; j++)
-                                 {
-                                     if (j != playersID)
-                                     {
-                                         listdesplayers0[(j) % Nbresdejoueurs].movement();
-                                     }
-                                 }*/
 
+
+
+                                //le joueur en question a toutes les information de la methode movement cad pour bouger  à gauche si player.left=true , il bougera de +5 
+                                
+                                listdesplayers0[(i)].movement();
+                              
+
+
+
+
+
+                             //pour savoir si left est à true ou a false on appelle cette methode
                                 moovotherplayer(goleft, goright, gojump, i);
 
 
 
 
-                                //recuperation valeur coin
-                                string[] coinsplit = coin1.Split(':');
-                                int a = Int32.Parse(coinsplit[0]);
-                                int b = Int32.Parse(coinsplit[1]);
+
+
+
+                            
 
 
 
 
-                                collisionCoinsplayer2(a, b);
 
-                                
+
+
+                            
+                               collisionCoinsplayer2();
+
+
 
 
                                 buffer = Encoding.ASCII.GetBytes("ok player" + i);
@@ -1734,11 +1647,11 @@ namespace PlateformWithoutMoov
                     
                     
                     }
-              /*  }catch(SocketException eraz)
+                }catch(SocketException error)
                 {
-                    Application.Exit();
+               
                     Environment.Exit(1);
-                }*/
+                }
 
 
 
@@ -1748,10 +1661,12 @@ namespace PlateformWithoutMoov
                 {
                     //Player item = listdesplayers0.ElementAt(i);
                     if (i != playersID)
-                    { // ça ne conerne pas  donc lisdesplayers[playerID] , ça concerne les autres
+                    { 
+                        
+                        // ça ne conerne pas  donc lisdesplayers[playerID] , ça concerne les autres
 
                         listdesplayers0[(i)].collisionPlatform1();
-                        // item.collisionPlatform1();
+                        
                     }
                 }
 
@@ -1779,7 +1694,6 @@ namespace PlateformWithoutMoov
 
         private void cdToolStripMenuItem_Click(object sender, EventArgs e)
         {
-           
             Application.Exit();
 
         }

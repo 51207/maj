@@ -13,7 +13,7 @@ namespace PlateformWithoutMoov
         public bool left { get; set; }
         public bool right { get; set; }
         public bool Jump { get; set; }
-        public int force { get; set; }
+       
         public int G { get; set; }
         public int speed { get; set; } = 5;
         public int jumpspeed { get; set; }
